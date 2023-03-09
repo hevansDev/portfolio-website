@@ -3,6 +3,7 @@ full_title: Turn a Raspberry Pi into an IoT device with AWS
 subtitle: Cheap and easy IoT with AWS
 ---
 ![raspberry pi connected to the internet, digital artt](/assets/images/2022-08-12-Turn-a-Raspberry-Pi-into-an-IoT-device-with-AWS/cover.webp)
+
 In this article I will explain how you can make your own IoT device using a Raspberry Pi and some free AWS services.
 
 ### What is IoT?
