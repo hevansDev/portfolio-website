@@ -1,0 +1,19 @@
+#focus {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.question {
+  display: flex;
+  gap: 10px;
+}
+
+.card {
+  margin-top:10px;
+}
+
+.btn {
+  margin:10px;
+}
