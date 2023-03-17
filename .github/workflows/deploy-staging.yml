@@ -1,0 +1,27 @@
+name: Deploy Staging
+
+on:
+  push:
+    branches:
+    - staging
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+
+      - name: Build
+        uses: jerryjvl/jekyll-build-action@v1
+
+      - name: copy file via ssh password
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+          port: ${{ secrets.PORT }}
+          source: "_site/"
+          target: "/var/www/html/staging/"
+          strip_components: 1
