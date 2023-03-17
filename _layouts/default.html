@@ -8,9 +8,10 @@
   <body>
     <div class="container">
       <div class="row">
+        {% include page-nav.html %}
+      </div>
+      <div class="row">
         <div class="col mx-auto">
-          {% include site-title.html %}
-          {% include page-nav.html %}
           {{ content }}
         </div>
       </div>
