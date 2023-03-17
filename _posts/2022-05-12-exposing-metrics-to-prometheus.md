@@ -18,7 +18,8 @@ If you don’t have to access to your Prometheus configuration file (if for exam
 #### Service Discovery
 
 
-![]({{ site.baseurl }}/assets/images/1KgS_SjbowMLLyo9wlsW7pQ.jpeg)Service monitor metric endpoints service discovery
+![]({{ site.baseurl }}/assets/images/1KgS_SjbowMLLyo9wlsW7pQ.jpeg)
+*Service monitor metric endpoints service discovery*
 
 **1** Metrics endpoint exposed by a running application in a pod is mapped to a service.
 
