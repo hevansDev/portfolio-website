@@ -7,7 +7,8 @@ canonicalurl: https://medium.com/daemon-engineering/turn-a-raspberry-pi-into-an-
 #### Cheap and easy IoT with AWS
 
 
-![]({{ site.baseurl }}/assets/images/1IjLjuIeNcSFk_icBgrxapg.png)“raspberry pi connected to the internet, digital art” [**DALL·E 2**](https://medium.com/daemon-engineering/dall-e-2-what-happens-when-machines-make-art-ebd94b3f028b)
+![]({{ site.baseurl }}/assets/images/1IjLjuIeNcSFk_icBgrxapg.png)
+*“raspberry pi connected to the internet, digital art” [**DALL·E 2**](https://medium.com/daemon-engineering/dall-e-2-what-happens-when-machines-make-art-ebd94b3f028b)*
 
 In this article I will explain how you can make your own IoT device using a Raspberry Pi and some free AWS services.
 
@@ -88,71 +89,21 @@ If you wanted to create a slot that would allow a user to specify whether they w
 Once you have added your new intent or intents to the model save and build the model. You can now test your new intents by clicking the evaluate model. Once you’re happy with your new intents you can modify the Lambda function which handles intents by opening the Code tab.
 
 
-![]({{ site.baseurl }}/assets/images/1rOumAoWPxFEs-R1oGrSmQg.png)Testing the new intents added to the interaction model
+![]({{ site.baseurl }}/assets/images/1rOumAoWPxFEs-R1oGrSmQg.png)
+*Testing the new intents added to the interaction model*
 
 Add the following snippet to the lambda\_function.py file before the LaunchRequestHandler. Enter the credentials from the role you created earlier and the details of your SQS queue. This snippet will allow you to connect to the SQS queue and push messages to it. Later we will read these messages with the Raspberry Pi.
 
-
-
-
-```
-
-
 ```
 ...
-```
-
-
-```
-
-
-
-
-```
-
-
-```
-access_key = '**\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\***'
-
-
-```
-
-
-
-
-```
-
-
-```
+access_key = '********************'
+access_secret = '********************'
+region = '********************'
+queue_url = '********************'
 client = boto3.client('sqs', aws_access_key_id = access_key, aws_secret_access_key = access_secret, region_name = region)
-```
-
-
-```
-
-
-
-
-```
-
-
-```
 def push_message(client, message_body, url):
-
-
-```
-
-
-
-
-```
-
-
-```
+    response = client.send_message(QueueUrl = url, MessageBody= message_body )
 ...
-```
-
-
 ```
 
 
@@ -162,132 +113,35 @@ Add an intent handler for your new intent as below, make sure you also add your 
 
 
 ```
-
-
-```
 ...
-```
-
-
-```
-
-
-
-
-```
-
-
-```
 class SendMessageIntentHandler(AbstractRequestHandler):
-
-
-```
-
-
-
-
-```
-
-
-```
+    """Handler for SendMessage Intent."""
+    def can_handle(self, handler_input):
+        # type: (HandlerInput) -> bool
+        return ask_utils.is_intent_name("SendMessageIntent")(handler_input)
 def handle(self, handler_input):
-# type: (HandlerInput) -> Response
-message = get_slot_value(handler_input=handler_input, slot_name="message")
-push_message(client, message, queue_url)
-
-speak_output = "OK"
-```
-
-
-```
-
-
-
-
-```
-
-
-```
+        # type: (HandlerInput) -> Response
+        message = get_slot_value(handler_input=handler_input, slot_name="message")
+        push_message(client, message, queue_url)
+        
+        speak_output = "OK"
 return (
-handler_input.response_builder
-.speak(speak_output)
-# .ask("add a reprompt if you want to keep the session open for the user to respond")
-.response
-)
-```
-
-
-```
-
-
-
-
-```
-
-
-```
+            handler_input.response_builder
+                .speak(speak_output)
+                # .ask("add a reprompt if you want to keep the session open for the user to respond")
+                .response
+        )
 ...
-```
-
-
-```
-
-
-
-
-```
-
-
-```
 sb = SkillBuilder()
-```
-
-
-```
-
-
-
-
-```
-
-
-```
 sb.add_request_handler(LaunchRequestHandler())
-**sb.add\_request\_handler(SendMessageIntentHandler())**
+sb.add_request_handler(SendMessageIntentHandler())
 sb.add_request_handler(HelpIntentHandler())
 sb.add_request_handler(CancelOrStopIntentHandler())
 sb.add_request_handler(FallbackIntentHandler())
 sb.add_request_handler(SessionEndedRequestHandler())
 sb.add_request_handler(IntentReflectorHandler()) # make sure IntentReflectorHandler is last so it doesn't override your custom intent handlers
-```
-
-
-```
-
-
-
-
-```
-
-
-```
 sb.add_exception_handler(CatchAllExceptionHandler())
-```
-
-
-```
-
-
-
-
-```
-
-
-```
 lambda_handler = sb.lambda_handler()
-```
-
-
 ```
 
 
@@ -299,115 +153,22 @@ Save and deploy your skill. You can now test your skill by going to the Test tab
 
 Get your Raspberry Pi loaded up with your OS of choice. Create a new Python script and add the below code snippet. On running this script you should see a message from your SQS queue printed to the Python shell (if there aren’t any messages in your queue yet you can either use your new Alexa skill or the AWS console to push some messages for testing).
 
-
-
-
-```
-
-
 ```
 import boto3
-```
-
-
-```
-
-
-
-
-```
-
-
-```
-access_key = '**\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\***'
-access_secret = '**\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\***'
-region = '**\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\***'
-queue_url = '**\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\***'
-```
-
-
-```
-
-
-
-
-```
-
-
-```
+access_key = '********************'
+access_secret = '********************'
+region = '********************'
+queue_url = '********************'
 client = boto3.client('sqs', aws_access_key_id = access_key, aws_secret_access_key = access_secret, region_name = region)
-```
-
-
-```
-
-
-
-
-```
-
-
-```
 def pop_message():
-responses = client.receive_message(QueueUrl = queue_url, MaxNumberOfMessages = 10)
-```
-
-
-```
-
-
-
-
-```
-
-
-```
+    responses = client.receive_message(QueueUrl = queue_url, MaxNumberOfMessages = 10)
 if 'Messages' in responses:
-messages = responses['Messages']
-client.delete_message(QueueUrl = queue_url, ReceiptHandle = messages[0]['ReceiptHandle'])
-```
-
-
-```
-
-
-
-
-```
-
-
-```
-return messages[0]['Body']
-```
-
-
-```
-
-
-
-
-```
-
-
-```
+    messages = responses['Messages']
+    client.delete_message(QueueUrl = queue_url, ReceiptHandle = messages[0]['ReceiptHandle'])
+    return messages[0]['Body']
 message = pop_message()
-```
-
-
-```
-
-
-
-
-```
-
-
-```
 if message:
-print(message)
-```
-
-
+    print(message)
 ```
 
 
@@ -426,13 +187,8 @@ The versatile nature of SQS queues means that you can use this pattern for a var
 Whilst this approach isn’t the most scalable( for large numbers of devices see [AWS IoT](https://aws.amazon.com/iot/)) for small projects this is a quick and easy approach.
 
 
-<https://www.youtube.com/watch?v=duz3iYFznYc&feature=youtu.be>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/duz3iYFznYc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
-
-
----
-
-
-[Turn a Raspberry Pi into an IoT device with AWS](https://medium.com/daemon-engineering/turn-a-raspberry-pi-into-an-iot-device-with-aws-c82b03902d7a) was originally published in [daemon-engineering](https://medium.com/daemon-engineering) on Medium, where people are continuing the conversation by highlighting and responding to this story.
+[Turn a Raspberry Pi into an IoT device with AWS](https://medium.com/daemon-engineering/turn-a-raspberry-pi-into-an-iot-device-with-aws-c82b03902d7a) was originally published in [daemon-engineering](https://medium.com/daemon-engineering) on Medium.
 
 

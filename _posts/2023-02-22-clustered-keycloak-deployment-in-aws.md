@@ -127,11 +127,11 @@ Check the Keycloak logs and ensure your database access details (password and ho
 
 ### Resources
 
-[https://keycloak.discourse.group/t/use-of-jdbc-ping-with-keycloak-17-quarkus-distro/13571/29](https://keycloak.discourse.group/t/use-of-jdbc-ping-with-keycloak-17-quarkus-distro/13571/29)  
-[https://infinispan.org/docs/dev/titles/embedding/embedding.html#jgroups-cloud-discovery-protocols\_cluster-transport](https://infinispan.org/docs/dev/titles/embedding/embedding.html#jgroups-cloud-discovery-protocols_cluster-transport)
+[
+Use of JDBC_PING with Keycloak 17 (Quarkus distro)](https://keycloak.discourse.group/t/use-of-jdbc-ping-with-keycloak-17-quarkus-distro/13571/29)
 
-[https://www.keycloak.org/server/caching](https://www.keycloak.org/server/caching)
+[Embedding Infinispan caches in Java applications](https://infinispan.org/docs/dev/titles/embedding/embedding.html#jgroups-cloud-discovery-protocols_cluster-transport)
 
-Tags: [Cloud](https://www.dae.mn/insights/tag/cloud), [aws](https://www.dae.mn/insights/tag/aws), [terraform](https://www.dae.mn/insights/tag/terraform), [keycloak](https://www.dae.mn/insights/tag/keycloak), [devops](https://www.dae.mn/insights/tag/devops)
+[Keycloak Server caching](https://www.keycloak.org/server/caching)
 
-Originally publish on the [Daemon Insights blog](https://www.dae.mn/insights)
+[Clustered Keycloak SSO Deployment in AWS](https://www.dae.mn/insights/clustered-keycloak-sso-deployment-in-aws) was originally published on the [Daemon Insights blog](https://www.dae.mn/insights)
