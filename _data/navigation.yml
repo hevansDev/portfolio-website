@@ -1,0 +1,14 @@
+- name: home
+  link: /index.html
+- name: about
+  link: /about.html
+- name: archive
+  link: /archive.html
+- name: <i class="fa-brands fa-mastodon"></i>
+  link: https://hachyderm.io/@HughEvansDev
+- name: <i class="fa fa-github"></i>
+  link: https://github.com/hevansDev
+- name: <i class="fa fa-linkedin"></i>
+  link: https://www.linkedin.com/in/hugh-evans-435134153
+- name: <i class="fa-solid fa-envelope"></i>
+  link: mailto:hugh.evans.dev@gmail.com

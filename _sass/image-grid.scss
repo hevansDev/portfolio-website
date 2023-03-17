@@ -1,0 +1,28 @@
+p:has(img) {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+
+}
+
+p:has(img) em {
+    flex-basis: 100%;
+    text-align: center;
+}
+
+p img {
+    padding: 5px;
+}
+
+p img:only-of-type {
+    max-width: 100%;
+    width: 100%;
+    margin: auto;
+}
+
+
+p:has(img) img {
+    max-width: 50%;
+    height: auto;
+    flex-basis: 50%;
+}
