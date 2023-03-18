@@ -2,7 +2,7 @@
   <a class="navbar-brand" href="#">
     <h1>hugh.evans.dev</h1>
   </a>
-  <div class="d-flex justify-item-center">
+  <div class="d-flex justify-item-center flex-wrap">
     {% for item in site.data.navigation %}
       <a class="nav-item nav-link" href="{{ item.link }}" {% if page.url == item.link %}class="current"{% endif %}>{{ item.name }}</a>
     {% endfor %}
