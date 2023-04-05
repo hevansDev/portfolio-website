@@ -2,7 +2,7 @@ p:has(img) {
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
-
+    padding: 2%;
 }
 
 p:has(img) em {
