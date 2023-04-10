@@ -1,5 +1,6 @@
 ---
 title: DALL·E 2 - what happens when machines make art?
+tags: [Long form, AI, DALLE 2, Art]
 canonicalurl: https://medium.com/daemon-engineering/dall-e-2-what-happens-when-machines-make-art-ebd94b3f028b
 ---
 
