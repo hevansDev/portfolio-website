@@ -1,5 +1,6 @@
 ---
 title: Turn a Raspberry Pi into an IoT device with AWS
+tags: [How to, Raspberry Pi, IoT, AWS, SQS]
 canonicalurl: https://medium.com/daemon-engineering/turn-a-raspberry-pi-into-an-iot-device-with-aws-c82b03902d7a
 ---
 
