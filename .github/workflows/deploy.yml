@@ -14,18 +14,19 @@ jobs:
 
       - name: Build
         uses: jerryjvl/jekyll-build-action@v1
-        
+
       - uses: actions/upload-artifact@v2
         with:
           name: site
           path: _site
   deploy:
+    needs: build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/download-artifact@v2
         with:
           name: site
-          
+
       - name: copy file via ssh password
         uses: appleboy/scp-action@master
         with:
