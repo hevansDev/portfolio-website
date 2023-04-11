@@ -19,6 +19,7 @@ jobs:
         with:
           name: site
           path: _site
+      - run: ls -a .
   deploy:
     needs: build
     runs-on: ubuntu-latest
@@ -26,6 +27,8 @@ jobs:
       - uses: actions/download-artifact@v2
         with:
           name: site
+      
+      - run: ls -a .
 
       - name: copy file via ssh password
         uses: appleboy/scp-action@master
@@ -37,3 +40,4 @@ jobs:
           source: "_site/"
           target: "/var/www/html/"
           strip_components: 1
+      
