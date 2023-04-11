@@ -1,6 +1,7 @@
 name: Deploy Site
 
 on:
+  workflow_dispatch:
   push:
     branches:
     - main
@@ -38,5 +39,4 @@ jobs:
           port: ${{ secrets.PORT }}
           source: "*"
           target: "/var/www/html/"
-          strip_components: 1
       
