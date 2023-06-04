@@ -2,8 +2,6 @@
   link: /index.html
 - name: about
   link: /about.html
-- name: archive
-  link: /archive.html
 - name: <i class="fa-brands fa-mastodon"></i>
   link: https://hachyderm.io/@HughEvansDev
 - name: <i class="fa fa-github"></i>
