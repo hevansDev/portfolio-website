@@ -187,9 +187,6 @@ The versatile nature of SQS queues means that you can use this pattern for a var
 
 Whilst this approach isn’t the most scalable( for large numbers of devices see [AWS IoT](https://aws.amazon.com/iot/)) for small projects this is a quick and easy approach.
 
-
-<iframe width="560" height="315" src="https://www.youtube.com/embed/duz3iYFznYc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-
 [Turn a Raspberry Pi into an IoT device with AWS](https://medium.com/daemon-engineering/turn-a-raspberry-pi-into-an-iot-device-with-aws-c82b03902d7a) was originally published in [daemon-engineering](https://medium.com/daemon-engineering) on Medium.
 
 
