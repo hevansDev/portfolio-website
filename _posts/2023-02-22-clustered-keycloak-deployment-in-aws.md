@@ -117,14 +117,14 @@ If you terminate a Keycloak instance or start a new instance you should see the 
 
 ### Troubleshooting
 
-###### Changes made to config files aren’t applied after building Keycloak
+**Changes made to config files aren’t applied after building Keycloak**
 
 Ensure that the config files you have changed match those configured in _keycloak.conf_, this guide for example assumes that you have your Infinispan config file set as cache-ispn.xml in your _keycloak.conf_ file.
 ```
 cache-config-file: cache-ispn.xml
 ```
 
-###### Keycloak services don’t start after changing config files
+**Keycloak services don’t start after changing config files**
 
 Check the Keycloak logs and ensure your database access details (password and host url) are set correctly: if these values are incorrect the Keycloak service will fail to start.
 
