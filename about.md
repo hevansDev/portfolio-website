@@ -5,8 +5,6 @@ layout: default
 
 ### Hi, I'm Hugh.
 
-Hi, I'm Hugh.
-
 I'm an AWS Cloud Engineer at [Featurespace](featurespace.com) where I help to build our cloud infrastructure, prior to this I worked as a DevOps consultant at [Daemon Solutions](dae.mn).
 
 I write posts on a mixture of topics, mostly how to guides but also the occasional long form post on general technical topics I find interesting - often as companion pieces to talks covering those topics.
