@@ -5,10 +5,12 @@ layout: default
 
 ### Hi, I'm Hugh.
 
+Hi, I'm Hugh.
+
+I'm an AWS Cloud Engineer at [Featurespace](featurespace.com) where I help to build our cloud infrastructure, prior to this I worked as a DevOps consultant at [Daemon Solutions](dae.mn).
+
 I write posts on a mixture of topics, mostly how to guides but also the occasional long form post on general technical topics I find interesting - often as companion pieces to talks covering those topics.
 
-I currently work as a DevOps consultant at [Daemon Solutions](dae.mn), prior to this I worked as a full stack developer at IBM (after I completed my apprenticeship there) on the Spectrum Virtualize SAN storage product. Over the summer of 2018 I was a workshop facilitator for the Raspberry Pi Foundation as part of their NCS program. 
+I began my career working as a full stack developer at IBM (after I completed my apprenticeship there) on the Spectrum Virtualize SAN storage product. Whilst completing my A'Levels during the summer of 2018 I was a workshop facilitator for the Raspberry Pi Foundation as part of their NCS program. 
 
-Since December 2022 I have been organising a monthly, in person Meetup [(AI and Deep Learning for Enterprise)](https://www.meetup.com/enterprise-deep-learning-ai-uk) focused on deep learning and MLOps. I'm very new to community organising but it's been an exciting challenge and I'm looking forward to seeing AI and Deep Learning for Enterprise continue to grow.
-
-I'm helping Daemon Solutions to combat climate change by working to achieve Net Zero carbon dioxide emissions by leading the Environment working group which is currently building and implementing a plan for reducing and offsetting carbon dioxides emissions by 2030.
+Out of office hours I organise AI and Deep Learning for Enterprise (aidle.uk) , a Meetup group which hosts talks on real world applications of AI including the ethics and environmental impact of the use of AI.
