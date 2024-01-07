@@ -31,7 +31,7 @@ jobs:
           name: site
           
       - name: Copy site to host
-        uses: appleboy/scp-action@v0.1.6
+        uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
