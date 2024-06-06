@@ -6,8 +6,6 @@ layout: page
 
 ### Hi, I'm Hugh.
 
-Hi, I'm Hugh.
-
 I'm a Developer Advocate at Imply where I help to support and educate our community.
 
 I’ve been working in IT for over 5 years, working on large scale software projects and cloud infrastructure.
