@@ -1,3 +1,9 @@
+---
+title: Make "today's" data "yesterday's" data 
+tags: [How to, Druid, APIs, Testing, Draft]
+layout: post
+---
+
 ## Make "today's" data "yesterday's" data 
 
 ### Always "yesterday's" data "today"

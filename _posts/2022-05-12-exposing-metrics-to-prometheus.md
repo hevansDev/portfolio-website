@@ -1,6 +1,6 @@
 ---
 title: Exposing metrics to Prometheus with Service Monitors
-tags: [How to, Prometheus, IaC, Kubernetes]
+tags: [How to, Prometheus, IaC, Kubernetes, Article]
 canonicalurl: https://medium.com/daemon-engineering/exposing-metrics-to-prometheus-with-service-monitors-326f38b2daf1
 layout: post
 ---

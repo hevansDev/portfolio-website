@@ -1,6 +1,6 @@
 ---
 title: Backup your OpenSearch indices with manual snapshots
-tags: [How to, AWS, OpenSearch, DevOps]
+tags: [How to, AWS, OpenSearch, DevOps, Article]
 canonicalurl: https://www.dae.mn/insights/backup-your-opensearch-indices-with-manual-snapshots
 layout: post
 ---
