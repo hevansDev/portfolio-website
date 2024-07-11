@@ -1,6 +1,6 @@
 ---
 title: Clustered Keycloak SSO Deployment in AWS
-tags: [How to, Keycloak, AWS, SSO]
+tags: [How to, Keycloak, AWS, SSO, Article]
 canonicalurl: https://www.dae.mn/insights/clustered-keycloak-sso-deployment-in-aws
 layout: post
 ---

@@ -26,7 +26,7 @@ external:                  # shows a footer with social links - for available ic
   - {title: LinkedIn, icon: linkedin, url: "https://www.linkedin.com/in/hugh-evans-435134153"}
   - {title: Mastodon, icon: mastodon, url: "https://hachyderm.io/@HughEvansDev"}
 
-comments:
+#comments:
 #  disqus_shortname: ""    # see https://disqus.com/
 #  isso_domain: ""         # see https://posativ.org/isso/
 
