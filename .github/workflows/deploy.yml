@@ -17,7 +17,7 @@ jobs:
         uses: jerryjvl/jekyll-build-action@v1
 
       - name: Upload build
-        uses: actions/upload-artifact@v4.3.5
+        uses: actions/upload-artifact@v4.3.6
         with:
           name: site
           path: _site
