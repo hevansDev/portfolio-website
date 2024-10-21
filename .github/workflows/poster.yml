@@ -1,0 +1,28 @@
+name: Post to socials
+
+on: workflow_dispatch
+
+jobs:
+  social_post:
+    runs-on: ubuntu-20.04
+    steps:
+    - uses: actions/checkout@v4.1.7
+
+    - name: Get changed files
+      id: changed-files
+      uses: tj-actions/changed-files@v45
+      # To compare changes between the current commit and the last pushed remote commit set `since_last_remote_commit: true`. e.g
+      # with:
+      #   since_last_remote_commit: true
+      with:
+        files: |
+          _posts/**
+
+    - name: Post all new posts
+      if: steps.changed-files.outputs.any_changed == 'true'
+      env:
+        ALL_NEW_POSTS: ${{ steps.changed-files.outputs.added_files }}
+      run: |
+        for file in ${ALL_NEW_POSTS}; do
+          echo "$file"
+        done
