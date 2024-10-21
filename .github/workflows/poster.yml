@@ -24,8 +24,7 @@ jobs:
         ALL_NEW_POSTS: ${{ steps.changed-files.outputs.added_files }}
       run: |
         for file in ${ALL_NEW_POSTS}; do
-          filename=$(basename $file)
-          blog=${filename::-3}
+          blog=${file:10:-3}
           echo $blog
         done
         
