@@ -25,7 +25,6 @@ jobs:
       run: |
         for file in ${ALL_NEW_POSTS}; do
           echo ${$(basename $file)::-3}
-
         done
         
         # curl -X POST -d "{\"status\":\"https://hughevans.dev/aerospike-barcelona-data-management-community-meetup/\", \
