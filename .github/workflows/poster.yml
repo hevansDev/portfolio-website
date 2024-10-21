@@ -24,5 +24,12 @@ jobs:
         ALL_NEW_POSTS: ${{ steps.changed-files.outputs.added_files }}
       run: |
         for file in ${ALL_NEW_POSTS}; do
-          echo "$file"
+          echo ${$(basename $file)::-3}
+
         done
+        
+        # curl -X POST -d "{\"status\":\"https://hughevans.dev/aerospike-barcelona-data-management-community-meetup/\", \
+        # \"media_ids\":null,\"poll\":null}" \
+        # -H "Content-Type: application/json" \
+        # -H "Authorization: Bearer ${{secrets.MASTODON_USER_TOKEN}}" \
+        # "https://hachyderm.io/api/v1/statuses"
