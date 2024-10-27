@@ -1,6 +1,10 @@
 name: Post to socials
 
-on: workflow_dispatch
+on:
+  workflow_dispatch:
+  push:
+    branches:
+    - main
 
 jobs:
   social_post:
@@ -30,3 +34,4 @@ jobs:
           -H "Content-Type: application/json" \
           -H "Authorization: Bearer ${{secrets.MASTODON_USER_TOKEN}}" \
           "https://hachyderm.io/api/v1/statuses"
+        done
