@@ -25,10 +25,11 @@ jobs:
       run: |
         for file in ${ALL_NEW_POSTS}; do
           blog=${file:18:-3}
+          curl -X POST -d "{\"status\":\"https://hughevans.dev/$blog/\", \
+          \"media_ids\":null,\"poll\":null}" \
+          -H "Content-Type: application/json" \
+          -H "Authorization: Bearer ${{secrets.MASTODON_USER_TOKEN}}" \
+          "https://hachyderm.io/api/v1/statuses"
         done
         
-        curl -X POST -d "{\"status\":\"https://hughevans.dev/$blog/\", \
-        \"media_ids\":null,\"poll\":null}" \
-        -H "Content-Type: application/json" \
-        -H "Authorization: Bearer ${{secrets.MASTODON_USER_TOKEN}}" \
-        "https://hachyderm.io/api/v1/statuses"
+
