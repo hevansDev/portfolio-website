@@ -40,7 +40,7 @@ jobs:
           "https://hachyderm.io/api/v1/statuses"
 
           # Post to Bluesky
-          export APP_PASSWORD='${{secrets.BLUESKY_APP_PASSWORD}}''
+          export APP_PASSWORD='${{secrets.BLUESKY_APP_PASSWORD}}'
 
           HANDLE='hevansdev.bsky.social'
           DID_URL="https://bsky.social/xrpc/com.atproto.identity.resolveHandle"
