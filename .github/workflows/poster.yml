@@ -27,11 +27,41 @@ jobs:
       env:
         ALL_NEW_POSTS: ${{ steps.changed-files.outputs.added_files }}
       run: |
+        
         for file in ${ALL_NEW_POSTS}; do
-          blog=${file:18:-3}
-          curl -X POST -d "{\"status\":\"https://hughevans.dev/$blog/\", \
+          # Get new post URLs from diff
+          blog_url="https://hughevans.dev/$blog/${file:18:-3}"
+
+          # Post to Mastodon
+          curl -X POST -d "{\"status\":\"blog_url\", \
           \"media_ids\":null,\"poll\":null}" \
           -H "Content-Type: application/json" \
           -H "Authorization: Bearer ${{secrets.MASTODON_USER_TOKEN}}" \
           "https://hachyderm.io/api/v1/statuses"
+
+          # Post to Bluesky
+          export APP_PASSWORD='${{secrets.BLUESKY_APP_PASSWORD}}''
+
+          HANDLE='hevansdev.bsky.social'
+          DID_URL="https://bsky.social/xrpc/com.atproto.identity.resolveHandle"
+          export DID=$(curl -G \
+              --data-urlencode "handle=$HANDLE" \
+              "$DID_URL" | jq -r .did)
+
+          # Get API key with the app password
+          API_KEY_URL='https://bsky.social/xrpc/com.atproto.server.createSession'
+          POST_DATA="{ \"identifier\": \"${DID}\", \"password\": \"${APP_PASSWORD}\" }"
+          export API_KEY=$(curl -X POST \
+              -H 'Content-Type: application/json' \
+              -d "$POST_DATA" \
+              "$API_KEY_URL" | jq -r .accessJwt)
+
+          # Post "Hello, world" to your feed
+          POST_FEED_URL='https://bsky.social/xrpc/com.atproto.repo.createRecord'
+          POST_RECORD="{ \"collection\": \"app.bsky.feed.post\", \"repo\": \"${DID}\", \"record\": { \"text\": \"$blog_url\", \"createdAt\": \"$(date -u +"%Y-%m-%dT%H:%M:%SZ")\", \"\$type\": \"app.bsky.feed.post\" } }"
+          curl -X POST \
+              -H "Authorization: Bearer ${API_KEY}" \
+              -H 'Content-Type: application/json' \
+              -d "$POST_RECORD" \
+              "$POST_FEED_URL" | jq -r
         done
