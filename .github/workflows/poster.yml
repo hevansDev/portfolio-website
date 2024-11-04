@@ -33,7 +33,7 @@ jobs:
           blog_url="https://hughevans.dev/$blog/${file:18:-3}"
 
           # Post to Mastodon
-          curl -X POST -d "{\"status\":\"blog_url\", \
+          curl -X POST -d "{\"status\":\"$blog_url\", \
           \"media_ids\":null,\"poll\":null}" \
           -H "Content-Type: application/json" \
           -H "Authorization: Bearer ${{secrets.MASTODON_USER_TOKEN}}" \
@@ -58,7 +58,7 @@ jobs:
 
           # Post "Hello, world" to your feed
           POST_FEED_URL='https://bsky.social/xrpc/com.atproto.repo.createRecord'
-          POST_RECORD="{ \"collection\": \"app.bsky.feed.post\", \"repo\": \"${DID}\", \"record\": { \"text\": \"$blog_url\", \"createdAt\": \"$(date -u +"%Y-%m-%dT%H:%M:%SZ")\", \"\$type\": \"app.bsky.feed.post\" } }"
+          POST_RECORD="{ \"collection\": \"app.bsky.feed.post\", \"repo\": \"${DID}\", \"record\": { \"text\": \"[$blog_url]($blog)\", \"createdAt\": \"$(date -u +"%Y-%m-%dT%H:%M:%SZ")\", \"\$type\": \"app.bsky.feed.post\" } }"
           curl -X POST \
               -H "Authorization: Bearer ${API_KEY}" \
               -H 'Content-Type: application/json' \
