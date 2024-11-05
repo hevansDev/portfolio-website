@@ -78,6 +78,7 @@ jobs:
 
           # Site embed
           POST_FEED_URL='https://bsky.social/xrpc/com.atproto.repo.createRecord'
+<<<<<<< HEAD
           POST_RECORD="{ \"collection\": \"app.bsky.feed.post\",
           \"repo\": \"${DID}\",
           \"record\": {
@@ -101,6 +102,9 @@ jobs:
                   }
               } 
           }"
+=======
+          POST_RECORD="{ \"collection\": \"app.bsky.feed.post\", \"repo\": \"${DID}\", \"record\": { \"text\": \"$blog_url\", \"createdAt\": \"$(date -u +"%Y-%m-%dT%H:%M:%SZ")\", \"\$type\": \"app.bsky.feed.post\" } }"
+>>>>>>> 323ae41 (Cleanup)
           curl -X POST \
               -H "Authorization: Bearer ${API_KEY}" \
               -H 'Content-Type: application/json' \
