@@ -27,11 +27,12 @@ jobs:
       env:
         ALL_NEW_POSTS: ${{ steps.changed-files.outputs.added_files }}
       run: |
+
+        sudo apt-get update && sudo apt-get install libxml2-utils
         
         for file in ${ALL_NEW_POSTS}; do
           # Get new post URLs from diff
-          blog_url="https://hughevans.dev/$blog/${file:18:-3}"
-          echo $blog_url
+          blog_url="https://hughevans.dev/${file:18:-3}"
 
           # Post to Mastodon
           curl -X POST -d "{\"status\":\"$blog_url\", \
