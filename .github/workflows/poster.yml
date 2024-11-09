@@ -31,6 +31,7 @@ jobs:
         sudo apt-get update && sudo apt-get install libxml2-utils
         
         for file in ${ALL_NEW_POSTS}; do
+          echo $file
           # Get new post URLs from diff
           blog_url="https://hughevans.dev/${file:18:-3}"
 
