@@ -27,6 +27,8 @@ jobs:
       env:
         ALL_NEW_POSTS: ${{ steps.changed-files.outputs.added_files }}
       run: |
+
+        sudo apt-get update && sudo apt-get install libxml2-utils
         
         for file in ${ALL_NEW_POSTS}; do
           # Get new post URLs from diff
