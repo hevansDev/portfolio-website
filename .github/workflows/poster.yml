@@ -120,3 +120,4 @@ jobs:
               -H 'Content-Type: application/json' \
               -d "$POST_RECORD" \
               "$POST_FEED_URL" | jq -r
+        done
