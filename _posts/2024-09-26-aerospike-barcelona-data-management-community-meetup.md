@@ -4,7 +4,7 @@ tags: [Video, Druid, Imply, Meetup, Aerospike, Article]
 layout: post
 ---
 
-<meta property="og:image" content="{{ site.baseurl }}/assets/images/barcelona.png">
+<meta property="og:image" content="{{ site.url }}/assets/images/barcelona.png">
 
 I had an amazing time speaking at the Aerospike Barcelona Data Management Community Meetup this week about working with flight radar data in Apache Druid. The team at Criteo were amazing hosts, super welcoming and friendly and the audience were really engaged with great questions after talks wrapped up. I'm looking forward to speaking at another Aerospike event later this year in Copenhagen.
 
