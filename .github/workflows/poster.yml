@@ -29,6 +29,7 @@ jobs:
       run: |
         
         for file in ${ALL_NEW_POSTS}; do
+          echo $file
           # Get new post URLs from diff
           blog_url="https://hughevans.dev/$blog/${file:18:-3}"
 
