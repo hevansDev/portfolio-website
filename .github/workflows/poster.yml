@@ -29,7 +29,6 @@ jobs:
       run: |
         
         for file in ${ALL_NEW_POSTS}; do
-          echo $file
           # Get new post URLs from diff
           blog_url="https://hughevans.dev/${file:18:-3}"
 
@@ -62,11 +61,7 @@ jobs:
           curl -O $og_img_url
 
           # Get page title
-<<<<<<< HEAD
-          page_tile=$(curl $blog_url -so - | grep -o "<title>[^<]*" | tail -c+8)
-=======
-          page_tile=$($(curl $blog_url | xmllint -html -xpath '//head/title/text()' -))
->>>>>>> 23ecbfb (Bluesky card embed properly working)
+          page_title=$(curl $blog_url -so - | grep -o "<title>[^<]*" | tail -c+8)
 
           # Upload embed image blob
           blob=$(curl -X POST \
@@ -82,10 +77,6 @@ jobs:
 
           # Site embed
           POST_FEED_URL='https://bsky.social/xrpc/com.atproto.repo.createRecord'
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 23ecbfb (Bluesky card embed properly working)
           POST_RECORD="{ \"collection\": \"app.bsky.feed.post\",
           \"repo\": \"${DID}\",
           \"record\": {
@@ -109,12 +100,6 @@ jobs:
                   }
               } 
           }"
-<<<<<<< HEAD
-=======
-          POST_RECORD="{ \"collection\": \"app.bsky.feed.post\", \"repo\": \"${DID}\", \"record\": { \"text\": \"$blog_url\", \"createdAt\": \"$(date -u +"%Y-%m-%dT%H:%M:%SZ")\", \"\$type\": \"app.bsky.feed.post\" } }"
->>>>>>> 323ae41 (Cleanup)
-=======
->>>>>>> 23ecbfb (Bluesky card embed properly working)
           curl -X POST \
               -H "Authorization: Bearer ${API_KEY}" \
               -H 'Content-Type: application/json' \
