@@ -2,9 +2,9 @@ name: Post to socials
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-    - main
+  workflow_run:
+    workflows: ['Deploy Site']
+    types: [completed]
 
 jobs:
   social_post:
@@ -105,3 +105,4 @@ jobs:
               -H 'Content-Type: application/json' \
               -d "$POST_RECORD" \
               "$POST_FEED_URL" | jq -r
+        done
