@@ -32,6 +32,7 @@ jobs:
           echo $file
           # Get new post URLs from diff
           blog_url="https://hughevans.dev/$blog/${file:18:-3}"
+          echo $blog_url
 
           # Post to Mastodon
           curl -X POST -d "{\"status\":\"$blog_url\", \
