@@ -56,12 +56,52 @@ jobs:
               -d "$POST_DATA" \
               "$API_KEY_URL" | jq -r .accessJwt)
 
-          # Post "Hello, world" to your feed
+          # Get page og image
+          og_img_url=$(curl -L $blog_url | grep 'og.image' | grep -oE "(http|https)://[a-zA-Z0-9./?=_%:-]*")
+          curl -O $og_img_url
+
+          # Get page title
+          page_tile=$($(curl $blog_url | xmllint -html -xpath '//head/title/text()' -))
+
+          # Upload embed image blob
+          blob=$(curl -X POST \
+              -H "Authorization: Bearer ${API_KEY}" \
+              -H 'Content-Type: image/jpeg' \
+              --data-binary @$(ls *.jpg) \
+              "https://bsky.social/xrpc/com.atproto.repo.uploadBlob")
+
+
+          blob_size=$(echo $blob | jq  '.blob.size')
+
+          blob_link=$(echo $blob | jq  '.blob.ref."$link"')
+
+          # Site embed
           POST_FEED_URL='https://bsky.social/xrpc/com.atproto.repo.createRecord'
-          POST_RECORD="{ \"collection\": \"app.bsky.feed.post\", \"repo\": \"${DID}\", \"record\": { \"text\": \"$blog_url\", \"createdAt\": \"$(date -u +"%Y-%m-%dT%H:%M:%SZ")\", \"\$type\": \"app.bsky.feed.post\" } }"
+          POST_RECORD="{ \"collection\": \"app.bsky.feed.post\",
+          \"repo\": \"${DID}\",
+          \"record\": {
+          \"text\": \"\",
+          \"\$type\": \"app.bsky.feed.post\",
+          \"createdAt\": \"$(date -u +"%Y-%m-%dT%H:%M:%SZ")\",
+          \"embed\": {
+              \"\$type\": \"app.bsky.embed.external\",
+                  \"external\": {
+                      \"uri\": \"$blog_url\",
+                      \"title\": \"$page_title\",
+                      \"description\": \"\",
+                      \"thumb\": {
+                          \"\$type\": \"blob\",
+                          \"ref\": {
+                              \"\$link\": $blob_link
+                          },
+                          \"mimeType\": \"image/jpeg\",
+                          \"size\": $blob_size } 
+                      }
+                  }
+              } 
+          }"
           curl -X POST \
               -H "Authorization: Bearer ${API_KEY}" \
               -H 'Content-Type: application/json' \
               -d "$POST_RECORD" \
               "$POST_FEED_URL" | jq -r
-        done
