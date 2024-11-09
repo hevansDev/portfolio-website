@@ -1,10 +1,12 @@
 title: "hughevans.dev"
+url: "https://hughevans.dev"
 author: "Hugh Evans"
 description: ""
 permalink: /:title/
 lang: "en"
 excerpt_separator: "\n\n\n"
 date_format: "%B %d, %Y"
+image: 
 
 # Layout
 
