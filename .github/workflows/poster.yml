@@ -27,8 +27,6 @@ jobs:
       env:
         ALL_NEW_POSTS: ${{ steps.changed-files.outputs.added_files }}
       run: |
-
-        apt-get update && apt-get install libxml2-utils
         
         for file in ${ALL_NEW_POSTS}; do
           echo $file
@@ -64,7 +62,7 @@ jobs:
           curl -O $og_img_url
 
           # Get page title
-          page_tile=$($(curl $blog_url | xmllint -html -xpath '//head/title/text()' -))
+          page_tile=$(curl $blog_url -so - | grep -o "<title>[^<]*" | tail -c+8)
 
           # Upload embed image blob
           blob=$(curl -X POST \
