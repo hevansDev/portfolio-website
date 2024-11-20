@@ -1,5 +1,5 @@
 ---
-title: Adventure in POSSE
+title: Adventures in POSSE
 tags: [HowTo, POSSE, API, OSS, Article]
 layout: post
 ---

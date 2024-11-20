@@ -88,7 +88,7 @@ jobs:
               \"\$type\": \"app.bsky.embed.external\",
                   \"external\": {
                       \"uri\": \"$blog_url\",
-                      \"title\": \"$page_title\",
+                      \"title\": \"$(echo $page_title)\",
                       \"description\": \"\",
                       \"thumb\": {
                           \"\$type\": \"blob\",
