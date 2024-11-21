@@ -27,7 +27,6 @@ jobs:
       env:
         ALL_NEW_POSTS: ${{ steps.changed-files.outputs.added_files }}
       run: |
-        sh --version
         for file in ${ALL_NEW_POSTS}; do
           echo $file
           
