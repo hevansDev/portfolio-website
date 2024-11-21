@@ -27,11 +27,12 @@ jobs:
       env:
         ALL_NEW_POSTS: ${{ steps.changed-files.outputs.added_files }}
       run: |
-        
+        sh --version
         for file in ${ALL_NEW_POSTS}; do
           echo $file
+          
           # Get new post URLs from diff
-          blog_url="https://hughevans.dev/${file:18:-3}"
+          blog_url="https://hughevans.dev/${file:18:-3}/"
 
           # Post to Mastodon
           curl -X POST -d "{\"status\":\"$blog_url\", \
@@ -88,7 +89,7 @@ jobs:
               \"\$type\": \"app.bsky.embed.external\",
                   \"external\": {
                       \"uri\": \"$blog_url\",
-                      \"title\": \"$(echo $page_title)\",
+                      \"title\": \"$page_title\",
                       \"description\": \"\",
                       \"thumb\": {
                           \"\$type\": \"blob\",
