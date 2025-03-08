@@ -29,6 +29,7 @@ external:                  # shows a footer with social links - for available ic
   - {title: Mastodon, icon: mastodon, url: "https://hachyderm.io/@HughEvansDev"}
   - {title: Bluesky, icon: bluesky, url: "https://bsky.app/profile/hevansdev.bsky.social"}
   - {title: Medium, icon: medium, url: "https://medium.com/@hugh.evans.dev"}
+  - {title: Not Another Pizza, icon: pizza-slice, url: "https://notanother.pizza"}
 
 #comments:
 #  disqus_shortname: ""    # see https://disqus.com/

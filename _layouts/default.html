@@ -36,7 +36,7 @@
   <a href="{{ "/" | relative_url }}" class="title">{{ site.title | escape }}</a>
   {% include menu.html menu=pages %}
   {% if site.external %}
-  <div>{{ site.description | default: site.title }}</div>
+  <!--<div>{{ site.description | default: site.title }}</div>-->
   {% include menu.html menu=site.external %}
 {% endif %}
 </header>
