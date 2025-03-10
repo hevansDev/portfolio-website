@@ -67,16 +67,19 @@ jobs:
             fixed_og_img_url=$(echo $og_img_url | sed 's|/assets/images/assets/images/|/assets/images/|' | sed 's|\.jpeg\.jpg$|\.jpg|')
             echo "Fixed Image URL: $fixed_og_img_url"
 
+            # Extract the filename from the URL
+            image_filename=$(basename "$fixed_og_img_url")
+
             # Download the image with the fixed URL
-            curl -O $fixed_og_img_url
+            curl -o "$image_filename" "$fixed_og_img_url"
             # Get page title
             page_title=$(curl $blog_url -so - | grep -o "<title>[^<]*" | tail -c+8)
 
-            # Upload embed image blob
+            # Upload embed image blob (use the specific filename)
             blob=$(curl -X POST \
                 -H "Authorization: Bearer ${API_KEY}" \
                 -H 'Content-Type: image/jpeg' \
-                --data-binary @$(ls *.jpg) \
+                --data-binary @"$image_filename" \
                 "https://bsky.social/xrpc/com.atproto.repo.uploadBlob")
 
 
