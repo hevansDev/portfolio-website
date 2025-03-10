@@ -28,82 +28,90 @@ jobs:
         ALL_NEW_POSTS: ${{ steps.changed-files.outputs.added_files }}
       run: |
         for file in ${ALL_NEW_POSTS}; do
-          echo $file
-          
-          # Get new post URLs from diff
-          blog_url="https://hughevans.dev/${file:18:-3}/"
+            echo $file
+            
+            # Get new post URLs from diff
+            filename=${file:18}  # Remove the "_posts/" prefix
+            basename=${filename%.*}  # Remove the extension
+            blog_url="https://hughevans.dev/$basename/"
 
-          # Post to Mastodon
-          curl -X POST -d "{\"status\":\"$blog_url\", \
-          \"media_ids\":null,\"poll\":null}" \
-          -H "Content-Type: application/json" \
-          -H "Authorization: Bearer ${{secrets.MASTODON_USER_TOKEN}}" \
-          "https://hachyderm.io/api/v1/statuses"
+            # Post to Mastodon
+            curl -X POST -d "{\"status\":\"$blog_url\", \
+            \"media_ids\":null,\"poll\":null}" \
+            -H "Content-Type: application/json" \
+            -H "Authorization: Bearer ${{secrets.MASTODON_USER_TOKEN}}" \
+            "https://hachyderm.io/api/v1/statuses"
 
-          # Post to Bluesky
-          export APP_PASSWORD='${{secrets.BLUESKY_APP_PASSWORD}}'
+            # Post to Bluesky
+            export APP_PASSWORD='${{secrets.BLUESKY_APP_PASSWORD}}'
 
-          HANDLE='hevansdev.bsky.social'
-          DID_URL="https://bsky.social/xrpc/com.atproto.identity.resolveHandle"
-          export DID=$(curl -G \
-              --data-urlencode "handle=$HANDLE" \
-              "$DID_URL" | jq -r .did)
+            HANDLE='hevansdev.bsky.social'
+            DID_URL="https://bsky.social/xrpc/com.atproto.identity.resolveHandle"
+            export DID=$(curl -G \
+                --data-urlencode "handle=$HANDLE" \
+                "$DID_URL" | jq -r .did)
 
-          # Get API key with the app password
-          API_KEY_URL='https://bsky.social/xrpc/com.atproto.server.createSession'
-          POST_DATA="{ \"identifier\": \"${DID}\", \"password\": \"${APP_PASSWORD}\" }"
-          export API_KEY=$(curl -X POST \
-              -H 'Content-Type: application/json' \
-              -d "$POST_DATA" \
-              "$API_KEY_URL" | jq -r .accessJwt)
+            # Get API key with the app password
+            API_KEY_URL='https://bsky.social/xrpc/com.atproto.server.createSession'
+            POST_DATA="{ \"identifier\": \"${DID}\", \"password\": \"${APP_PASSWORD}\" }"
+            export API_KEY=$(curl -X POST \
+                -H 'Content-Type: application/json' \
+                -d "$POST_DATA" \
+                "$API_KEY_URL" | jq -r .accessJwt)
 
-          # Get page og image
-          og_img_url=$(curl -L $blog_url | grep 'og.image' | grep -oE "(http|https)://[a-zA-Z0-9./?=_%:-]*")
-          curl -O $og_img_url
+            # Get page og image
+            og_img_url=$(curl -L $blog_url | grep -o '<meta property="og:image" content="[^"]*"' | sed 's/.*content="\([^"]*\)".*/\1/')
+            echo "Original Image URL: $og_img_url"
 
-          # Get page title
-          page_title=$(curl $blog_url -so - | grep -o "<title>[^<]*" | tail -c+8)
+            # Fix duplicate path if it exists
+            fixed_og_img_url=$(echo $og_img_url | sed 's|/assets/images/assets/images/|/assets/images/|' | sed 's|\.jpeg\.jpg$|\.jpg|')
+            echo "Fixed Image URL: $fixed_og_img_url"
 
-          # Upload embed image blob
-          blob=$(curl -X POST \
-              -H "Authorization: Bearer ${API_KEY}" \
-              -H 'Content-Type: image/jpeg' \
-              --data-binary @$(ls *.jpg) \
-              "https://bsky.social/xrpc/com.atproto.repo.uploadBlob")
+            # Download the image with the fixed URL
+            curl -O $fixed_og_img_url
+            # Get page title
+            page_title=$(curl $blog_url -so - | grep -o "<title>[^<]*" | tail -c+8)
+
+            # Upload embed image blob
+            blob=$(curl -X POST \
+                -H "Authorization: Bearer ${API_KEY}" \
+                -H 'Content-Type: image/jpeg' \
+                --data-binary @$(ls *.jpg) \
+                "https://bsky.social/xrpc/com.atproto.repo.uploadBlob")
 
 
-          blob_size=$(echo $blob | jq  '.blob.size')
+            blob_size=$(echo $blob | jq  '.blob.size')
 
-          blob_link=$(echo $blob | jq  '.blob.ref."$link"')
+            blob_link=$(echo $blob | jq  '.blob.ref."$link"')
 
-          # Site embed
-          POST_FEED_URL='https://bsky.social/xrpc/com.atproto.repo.createRecord'
-          POST_RECORD="{ \"collection\": \"app.bsky.feed.post\",
-          \"repo\": \"${DID}\",
-          \"record\": {
-          \"text\": \"\",
-          \"\$type\": \"app.bsky.feed.post\",
-          \"createdAt\": \"$(date -u +"%Y-%m-%dT%H:%M:%SZ")\",
-          \"embed\": {
-              \"\$type\": \"app.bsky.embed.external\",
-                  \"external\": {
-                      \"uri\": \"$blog_url\",
-                      \"title\": \"$page_title\",
-                      \"description\": \"\",
-                      \"thumb\": {
-                          \"\$type\": \"blob\",
-                          \"ref\": {
-                              \"\$link\": $blob_link
-                          },
-                          \"mimeType\": \"image/jpeg\",
-                          \"size\": $blob_size } 
-                      }
-                  }
-              } 
-          }"
-          curl -X POST \
-              -H "Authorization: Bearer ${API_KEY}" \
-              -H 'Content-Type: application/json' \
-              -d "$POST_RECORD" \
-              "$POST_FEED_URL" | jq -r
-        done
+            # Site embed
+            POST_FEED_URL='https://bsky.social/xrpc/com.atproto.repo.createRecord'
+            POST_RECORD="{ \"collection\": \"app.bsky.feed.post\",
+            \"repo\": \"${DID}\",
+            \"record\": {
+            \"text\": \"\",
+            \"\$type\": \"app.bsky.feed.post\",
+            \"createdAt\": \"$(date -u +"%Y-%m-%dT%H:%M:%SZ")\",
+            \"embed\": {
+                \"\$type\": \"app.bsky.embed.external\",
+                    \"external\": {
+                        \"uri\": \"$blog_url\",
+                        \"title\": \"$page_title\",
+                        \"description\": \"\",
+                        \"thumb\": {
+                            \"\$type\": \"blob\",
+                            \"ref\": {
+                                \"\$link\": $blob_link
+                            },
+                            \"mimeType\": \"image/jpeg\",
+                            \"size\": $blob_size } 
+                        }
+                    }
+                } 
+            }"
+            curl -X POST \
+                -H "Authorization: Bearer ${API_KEY}" \
+                -H 'Content-Type: application/json' \
+                -d "$POST_RECORD" \
+                "$POST_FEED_URL" | jq -r
+          done
