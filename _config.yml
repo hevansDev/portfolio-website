@@ -8,6 +8,10 @@ excerpt_separator: "\n\n\n"
 date_format: "%B %d, %Y"
 image: 
 
+include:
+  - _next
+  - "**/_next/**"
+
 # Layout
 
 show_excerpts: true        # show article excerpts on the home page
