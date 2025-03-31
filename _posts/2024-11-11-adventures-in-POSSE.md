@@ -1,7 +1,8 @@
 ---
 title: Adventures in POSSE
-tags: [HowTo, POSSE, API, OSS, Article]
+tags: [Article, POSSE, IndieWeb]
 layout: post
+image: /assets/images/anne-fehres_luke-conroy_ai4media_hidden-labour-of-internet-browsing_2560x1440.jpg
 ---
 
 <meta property="og:image" content="{{ site.url }}/assets/images/anne-fehres_luke-conroy_ai4media_hidden-labour-of-internet-browsing_2560x1440.jpg">
