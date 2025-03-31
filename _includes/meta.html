@@ -3,3 +3,18 @@
   {%- assign date_format = site.date_format | default: "%B %d, %Y" -%}
   <time datetime="{{ include.post.date | date_to_xmlschema }}">{{ include.post.date | date: date_format }}</time>
 </header>
+
+{% if include.post.image %}
+<meta property="og:image" content="{{ site.url }}{{ include.post.image }}">
+{% elsif site.image %}
+<meta property="og:image" content="{{ site.url }}{{ site.image }}">
+{% endif %}
+
+<meta property="og:title" content="{{ include.post.title }}">
+<meta property="og:type" content="article">
+<meta property="og:url" content="{{ site.url }}{{ include.post.url }}">
+{% if include.post.description %}
+<meta property="og:description" content="{{ include.post.description }}">
+{% elsif site.description %}
+<meta property="og:description" content="{{ site.description }}">
+{% endif %}

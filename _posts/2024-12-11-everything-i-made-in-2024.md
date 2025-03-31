@@ -1,7 +1,8 @@
 ---
-title: Making it through 2024
-tags: [Making, Recap, EMF, Article]
+title: Everything I Made in 2024
+tags: [Article, Year in Review]
 layout: post
+image: /assets/images/san-fran1.jpeg
 ---
 
 <meta property="og:image" content="{{ site.url }}/assets/images/san-fran1.jpeg">

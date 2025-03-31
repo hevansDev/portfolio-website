@@ -1,10 +1,9 @@
 ---
-title: Codebar Festival Fringe 2025 Meetup is Terrible Now
-tags: [Video, Meetup, Codebar, Meetup, Article]
+title: Meetup is terrible now - Codebar Festival Fringe
+tags: [Article, Codebar, Festival Fringe]
 layout: post
+image: /assets/images/codebar-festival-fringe-2025.jpg
 ---
-
-<meta property="og:image" content="{{ site.url }}/assets/images/codebar-festival-fringe-2025.jpg">
 
 On Saturday I had the pleasure of speaking at the [codebar](https://codebar.io/) Festival Fringe at Newspeak House about my thoughts on the decline of Meetup and approaches for tackling platform decline in the community organising space and elsewhere.
 
