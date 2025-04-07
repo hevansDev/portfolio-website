@@ -65,3 +65,7 @@ I mitigated these issues by providing a few high-quality, well-structured exampl
 To recap using Cursor did in fact give me the ability to complete 26% more examples in the same timeframe and potentially helped me write more consistent documentation across examples. Whilst I still can't replace all manual steps of this particular task with Cursor and still had to spend time thoroughly checking the output it did save me time, so I will likely use Cursor to help with adding future examples. Looking at the numbers, Cursor Pro clearly pays for itself after adding just 15 examples - making it a worthwhile investment purely from a productivity standpoint.
 
 Would you try the "no manual coding" challenge after seeing these results? The best speedrun routes are found as a result of sharing techniques. I'm curious if anyone else has found 'skips' or optimizations I missed in their own AI-assisted workflows.
+
+---
+
+Did you know you can use Artemis Intelligence to keep your documentation up to date? Find out more on the [TurinTech AI Developer page](https://github.com/hevansDev/portfolio-website/pull/187).
