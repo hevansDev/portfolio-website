@@ -68,4 +68,4 @@ Would you try the "no manual coding" challenge after seeing these results? The b
 
 ---
 
-Did you know you can use Artemis Intelligence to keep your documentation up to date? Find out more on the [TurinTech AI Developer page](https://github.com/hevansDev/portfolio-website/pull/187).
+Did you know you can use Artemis Intelligence to keep your documentation up to date? Find out more on the [TurinTech AI Developer page](https://www.turintech.ai/developer).
