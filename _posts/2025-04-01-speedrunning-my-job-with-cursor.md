@@ -27,7 +27,7 @@ I specifically chose the task of adding an example to this repo as it is both a 
 
 Usually once I complete an optmisation or someone shares a PR with an optimisation with I manually copy the template directory, write a short summary of the project, copy the data across, and where appropriate add a demo which you can use to show the difference in peformance before and after the optimisation. For my speedrun I would see if I could complete the same task as a tool assisted speedrun using only Cursor without interacting with anything other than the terminal and chat.
 
-The specific example I was documenting in both cases was a DataStax Langflow Optimisation by Jordan Frazier ([see the PR here](https://github.com/langflow-ai/langflow/pull/7248)) who used our tool Artemis to improve the performance of the Langflow Python library.
+The specific example I was documenting in both cases was a DataStax Langflow Optimisation by Jordan Frazier ([see the PR here](https://github.com/langflow-ai/langflow/pull/7248)) who used our tool [Artemis](https://www.turintech.ai/artemis) to improve the performance of the Langflow Python library.
 
 
 <center>
