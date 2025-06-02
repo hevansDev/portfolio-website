@@ -5,9 +5,11 @@ layout: post
 image: /assets/images/flight-radar-banner.png
 ---
 
+![Flight radar talk photo collage]({{ site.baseurl }}/assets/images/flight-radar-banner.png)
+
 If you want to showcase real-time data architectures you need a data source that's live, high-volume, varied, and messy enough to showcase real-world challenges. This is an issue I've run into several times over the last year whilst giving talks about real-time analytics using Kafka, Druid, ClickHouse, and Grafana in various combinations. You could use a data generator like [ShadowTraffic](https://shadowtraffic.io/) but when trying to bring the sometimes dry topic of data engineering to life nothing beats real data. So when I'm building demos I've consistently turned to the same compelling dataset: ADS-B aircraft transmissions.
 
-I was introduced to ADS-B (Automatic Dependent Surveillance–Broadcast) by my former colleague at Imply Hellmar Becker, and is one of the technologies aircraft use to relay data including their position, heading, and speed to air traffic controllers and to other aircraft. This creates a continuous stream of real-time data that's publicly accessible and rich with analytical possibilities. The dataset perfectly illustrates the complexities of streaming analytics—it arrives at high velocity, contains mixed data types, requires deduplication and enrichment, and benefits from both real-time alerting and historical analysis.
+I was introduced to ADS-B (Automatic Dependent Surveillance–Broadcast) by my former colleague at Imply [Hellmar Becker](https://blog.hellmar-becker.de/), and is one of the technologies aircraft use to relay data including their position, heading, and speed to air traffic controllers and to other aircraft. This creates a continuous stream of real-time data that's publicly accessible and rich with analytical possibilities. The dataset perfectly illustrates the complexities of streaming analytics—it arrives at high velocity, contains mixed data types, requires deduplication and enrichment, and benefits from both real-time alerting and historical analysis.
 
 What makes ADS-B particularly valuable for demonstrations is its combination of technical complexity and intuitive appeal. Everyone understands aircraft movement, making it easy to visualize concepts like windowing, aggregation, and anomaly detection. Yet underneath this accessibility lies genuine engineering challenges: handling bursty traffic patterns, dealing with incomplete or duplicate messages, and correlating position data with aircraft metadata.
 
@@ -17,7 +19,9 @@ In this article, I'll walk through building a complete ADS-B ingestion pipeline�
 
 ## Understanding ADS-B Data
 
-ADS-B transmissions use a standardized message format called SBS (BaseStation format), which arrives as comma-separated text lines. Each message contains different types of aircraft information:
+![Flight radar 24 gif]({{ site.baseurl }}/assets/images/flight-radar.gif)
+
+ADS-B transmissions use a standardized message format called SBS (BaseStation format), which arrives as comma-separated text lines. Each message contains different types of aircraft information, for example:
 
 **Position Messages (MSG,3)**: Location, altitude, and identification data
 ```
@@ -29,11 +33,7 @@ MSG,3,1,1,40756A,1,2025/06/01,17:42:30.733,2025/06/01,17:42:30.776,,35000,,,40.1
 MSG,4,1,1,40756A,1,2025/06/01,17:42:31.233,2025/06/01,17:42:31.276,,,450,275,,,256,,,,,0
 ```
 
-**Key characteristics of ADS-B data:**
-- **High velocity**: 100-2000 messages/second depending on location
-- **Duplicate messages**: Same aircraft from multiple receivers (20-30% typical)
-- **Missing fields**: Not all messages contain complete information
-- **Bursty patterns**: Traffic varies by time of day and geographic location
+ADS-B data has a high data velocity with anywhere from 100 to 2000 messages a second produced by a receiver depending on location. There are some problems with ADS-B data that present a barrier to real time analytics with this data: the data contains duplicate messages because the same aircraft can be tracked by multiple receivers (as many as 20-30% of messages will be duplicates), the are missing fields because not all messages contain complete information, and traffic varies by time of day and geographic location.
 
 This real-world messiness makes ADS-B data perfect for demonstrating streaming analytics challenges like de-duplication, windowing, and real-time aggregation.
 
@@ -52,9 +52,9 @@ You can be receiving live ADS-B data for around £95 (or less, if you already ha
 
 ### Setup
 
-1. Install a supported OS on your Pi, I'm using a lite version (without a UI) of the official Debian Bookworm build, for details on how to do this follow the steps in the [guide on the Raspberry Pi website](https://www.raspberrypi.com/software/).
+1) Install a supported OS on your Pi, I'm using a lite version (without a UI) of the official Debian Bookworm build, for details on how to do this follow the steps in the [guide on the Raspberry Pi website](https://www.raspberrypi.com/software/).
 
-2. Install Docker on your Pi and add your user to the docker group to run docker without sudo. **Important**: Log out and back in for group changes to take effect.
+2) Install Docker on your Pi and add your user to the docker group to run docker without sudo. **Important**: Log out and back in for group changes to take effect.
 
 ```bash
 curl -sSL https://get.docker.com | sh
@@ -62,7 +62,7 @@ sudo usermod -aG docker pi
 # Log out and back in for group changes to take effect
 ```
 
-3. Create a new Docker compose called `docker-compose.yml` and define an ultrafeeder services as below. Note: this is a very basic ultrafeeder configuration, you may wish to consult the [setup guide in the ADS-B Ultrafeeder repo](https://github.com/sdr-enthusiasts/docker-adsb-ultrafeeder?tab=readme-ov-file#minimalist-setup) for a more in depth guide to setting up this part.
+3) Create a new Docker compose called `docker-compose.yml` and define an ultrafeeder services as below. Note: this is a very basic ultrafeeder configuration, you may wish to consult the [setup guide in the ADS-B Ultrafeeder repo](https://github.com/sdr-enthusiasts/docker-adsb-ultrafeeder?tab=readme-ov-file#minimalist-setup) for a more in depth guide to setting up this part.
 
 ```yaml
 services:
@@ -85,13 +85,15 @@ services:
       - /dev/bus/usb:/dev/bus/usb
 ```
 
-4. Deploy your ultrafeeder services:
+4) Deploy your ultrafeeder services:
 
 ```bash
 docker-compose up -d
 ```
 
-5. **Optional: Add FlightRadar24 Integration**
+5) **Optional: Add FlightRadar24 Integration**
+
+![Flight radar 24]({{ site.baseurl }}/assets/images/flight-radar.jpeg)
 
 Adding FR24 gives you two immediate benefits: a professional flight tracking interface and confirmation that your data quality meets commercial standards. Plus, contributing data gets you free access to FR24's premium features. Register [via the flight radar site](https://www.flightradar24.com/share-your-data) to get your sharing key, you should then be able to find your key in your Account Settings under "My data sharing".
 
@@ -119,7 +121,7 @@ docker-compose up -d
 
 Once setup your station should appear on their coverage map within 10-15 minutes.
 
-6. **Validate ADS-B Data Reception**
+6) **Validate ADS-B Data Reception**
 
 Test that you are receiving ADS-B data correctly:
 
@@ -163,9 +165,10 @@ docker-compose down && docker-compose up -d
 
 Now that we have ADS-B data streaming on port 30003 let's produce it to Kafka to allow us to work with it as an event stream. We'll add Kafka to our Docker stack and build a producer that can handle thousands of aircraft updates per second.
 
+
 ### Deploy Kafka
 
-1. First, let's extend your existing docker-compose.yml with Kafka services. Deploying Kafka alongside ultrafeeder on your Pi helps to keep networking simple but if you want to produce data from multiple receivers you may find it more practical to deploy Kafka elsewhere like on a secondary Pi or in a managed Kafka cluster in the Cloud. Add the following to your services section:
+1) First, let's extend your existing docker-compose.yml with Kafka services. Deploying Kafka alongside ultrafeeder on your Pi helps to keep networking simple but if you want to produce data from multiple receivers you may find it more practical to deploy Kafka elsewhere like on a secondary Pi or in a managed Kafka cluster in the Cloud ([check out this awesome guide by Robin Moffat on different configurations of Kafka and its associated producers and consumers](https://www.confluent.io/blog/kafka-client-cannot-connect-to-broker-on-aws-on-docker-etc)). Add the following to your services section:
 
 ```yaml
 # Add to existing services
@@ -206,13 +209,40 @@ Now that we have ADS-B data streaming on port 30003 let's produce it to Kafka to
       KAFKA_OPTS: "-Djava.security.auth.login.config=/etc/kafka/kafka_server_jaas.conf"
 ```
 
-2. Before we deploy our Kafka cluster let's set up some basic authentication. Whilst the ADS-B data we are producing is publicly available some basic auth will help protect your topic from 3rd parties modifying your data should you choose to make your broker publicly accessible over the network, for example: if you want to support multiple receivers on your home network producing to your topic. Create the directory structure:
+The above configuration supports producers within the same docker network and consumers outside of the network to allow for flexibility adding services later on. 
+
+```
+  # Map listener names to security protocols
+  KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:SASL_PLAINTEXT,EXTERNAL:SASL_PLAINTEXT,CONTROLLER:PLAINTEXT
+  # Define what addresses to advertise to clients
+  KAFKA_ADVERTISED_LISTENERS: INTERNAL://broker:29092,EXTERNAL://localhost:9092
+```
+
+All the default are set to keep the Kafka broker as small as possible with no data replication.
+
+```
+  KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+  KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+  KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+  KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+```
+
+We will also enable some basic auth. More on that in the next step.
+
+```
+  KAFKA_SASL_ENABLED_MECHANISMS: PLAIN
+  KAFKA_SASL_MECHANISM_INTER_BROKER_PROTOCOL: PLAIN
+  KAFKA_ALLOW_EVERYONE_IF_NO_ACL_FOUND: "true"
+  KAFKA_OPTS: "-Djava.security.auth.login.config=/etc/kafka/kafka_server_jaas.conf"
+```
+
+2) Before we deploy our Kafka cluster let's set up our basic authentication. Whilst the ADS-B data we are producing is publicly available some basic auth will help protect your topic from 3rd parties modifying your data should you choose to make your broker publicly accessible over the network, for example: if you want to support multiple receivers on your home network producing to your topic. Create the directory structure:
 
 ```bash
 mkdir -p kafka-config
 ```
 
-3. Create `kafka-config/kafka_server_jaas.conf` and configure a username and password (enter your own values instead of the defaults below!) both for server access and for client access:
+3) Create `kafka-config/kafka_server_jaas.conf` and configure a username and password (enter your own values instead of the defaults below!) both for server access and for client access:
 
 ```
 KafkaServer {
@@ -231,7 +261,7 @@ KafkaClient {
 };
 ```
 
-4. Redeploy with:
+4) Redeploy with:
 
 ```bash
 docker-compose up -d
@@ -241,13 +271,15 @@ docker-compose up -d
 
 Next we'll build a producer that listens to the ADS-B data on port 30003 and produces it to a topic in our Kafka broker.
 
-1. Create the producer directory:
+![ADS-B data gif]({{ site.baseurl }}/assets/images/adsb-data.gif)
+
+1) Create the producer directory:
 
 ```bash
 mkdir -p adsb-connector && cd adsb-connector
 ```
 
-2. Download the connector script. This script will handle writing your ADS-B data to the `adsb-raw` topic in Kafka as well as some quality of life features like ensuring the topic exists before producing, handling logging, and parsing ADS-B data:
+2) Download the connector script. This script will handle writing your ADS-B data to the `adsb-raw` topic in Kafka as well as some quality of life features like ensuring the topic exists before producing, handling logging, and parsing ADS-B data:
 
 ```bash
 curl -o connector.py https://raw.githubusercontent.com/hevansDev/olap-demo/main/receiver/adsb-connector/connector.py
@@ -265,7 +297,7 @@ def send_message(producer, message):
     }
 ```
 
-3. Create .env file in the adsb-connector directory to store your producer username and password and Kafka broker details (again update the placeholder values with your username and password from the previous section):
+3) Create .env file in the adsb-connector directory to store your producer username and password and Kafka broker details (again update the placeholder values with your username and password from the previous section):
 
 ```bash
 cat > .env << EOF
@@ -278,13 +310,13 @@ TOPIC_NAME=adsb-raw
 EOF
 ```
 
-4. Return to your main directory:
+4) Return to your main directory:
 
 ```bash
 cd ..
 ```
 
-5. Add the producer service to your docker-compose.yml:
+5) Add the producer service to your docker-compose.yml:
 
 ```yaml
 # Add to existing services
@@ -306,7 +338,7 @@ cd ..
     command: sh -c "apt-get update && apt-get install -y librdkafka-dev && pip install confluent-kafka python-dotenv && python connector.py"
 ```
 
-6. Deploy your new producer and check all the services are running:
+6) Deploy your new producer and check all the services are running:
 
 ```bash
 docker-compose up -d
@@ -322,7 +354,13 @@ c3d4e5f6a7b8   apache/kafka:latest                                "/etc/confluen
 d4e5f6a7b8c9   python:3.9                                         "sh -c 'apt-get upd…"   1 minute ago    Up 1 minute                                                           adsb-kafka-connector
 ```
 
-7. **Verify Kafka Integration**
+7) **Verify Kafka Integration**
+
+Connect to the broker container and verify the setup:
+
+```bash
+docker exec -it broker bash
+```
 
 Create consumer config with credentials:
 
@@ -334,25 +372,9 @@ sasl.jaas.config=org.apache.kafka.common.security.plain.PlainLoginModule require
 EOF
 ```
 
-Connect to the broker container and verify the setup:
-
-```bash
-# Connect to the broker container
-docker exec -it broker bash
-
-# List topics (should show adsb-raw)
-kafka-topics --bootstrap-server localhost:29092 --list
-```
-
-Expected output:
-```
-adsb-raw
-```
-
 Test consuming messages:
 
 ```bash
-# Consumer messages (will require authentication)
 kafka-console-consumer \
   --bootstrap-server localhost:29092 \
   --topic adsb-raw \
@@ -367,6 +389,10 @@ You should see JSON messages like:
 ```
 
 Press `Ctrl+C` to exit the consumer and `exit` to leave the broker container.
+
+### Quick Troubleshooting
+
+Not seeing any messages in Kafka? Triple check the values of your secrets both in your `.env` file and in `consumer.properties`, these must match for either the initial production or the test consumer to work.
 
 ---
 
@@ -383,7 +409,13 @@ Each message in Kafka now looks like:
 }
 ```
 
-This structured ADS-B data is now ready for real-time analytics, which we'll cover in the next article in this series.
+In building this pipeline you should now have learned the basics of deploying Apache Kafka and producing data to it that I hope will be useful to you in your future projects, if you build anything with this data or with this project please let me know! I'd love to see what you get up to.
+
+For the full code used to build this project check out the [project on my GitHub](https://github.com/hevansDev/olap-demo/tree/main/receiver). It is worth noting that whilst this project is a good place to get started with Kafka it is not yet production ready, further refinement is needed to make this project properly secure (like removing plaintext secrets in favour of proper secrets management).
+
+![Sample real time architecture for analytics]({{ site.baseurl }}/assets/images/flight-radar-architecture.jpg)
+
+This structured ADS-B data is now ready for real-time analytics, I plan on covering how you can do this with ClickHouse and Grafana in a future article. I've spoken before about analysing ADS-B with Apache Druid and Grafana at the Aerospike Barcelona Data Management Community Meetup and [you can find a recording of my talk here]({{ site.baseurl }}/aerospike-barcelona-data-management-community-meetup/).
 
 ## Further Reading
 
