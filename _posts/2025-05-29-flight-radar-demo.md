@@ -1,6 +1,6 @@
 ---
 title: From Radio Waves to Kafka Topics - Building a Real-Time Aircraft Data Pipeline
-tags: [Data Engineering, Architecture, OSS, Kafka, Article]
+tags: [Data, Engineering, Architecture, OSS, Kafka, Article]
 layout: post
 image: /assets/images/flight-radar-banner.png
 ---
