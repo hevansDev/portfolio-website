@@ -36,7 +36,7 @@ Setting up your HX711 will require some soldering, don't worry if you've not don
 - [Micro USB Power Supply](https://amzn.to/43C0nXh) (£15) - make sure to pick a reliable power supply that consistently delivers 5V/2.5A, I've linked to the official power supply here but almost any half decent Micro USB power supply will do.
 - [Acrylic](https://amzn.to/3TrxKaJ) / [Plywood-wood](https://amzn.to/4nBnRoE) sheets approximately 100x200mm (£6)- these will be used to mount your load cell and hold whatever it is you're weighing so anything cheap and rigid will do, I used some old plexiglass offcuts but I suspect even sturdy cardboard would work fine.
 - [Female to female Dupont cables](https://amzn.to/4nx52mJ) (£4) - you only need 4 of these to connect your HX711 to the headers on your Raspberry Pi but its worth buying them in a big pack like the one linked as it's much cheaper than only buying 4 and dupont cables are always handy for projects like this.
-- Optional: [Bird Feeder](https://amzn.to/4lKy14S) - You can install your load cell in whatever you want, I added mine to this bird feeder which has a handy removable tray which makes adding the load cell a breeze.
+- Optional: [Precision weights](https://amzn.to/3TsgiTv) (£12) - Can be used to accurately calibrate your load cell but any object that you know the exact weight of will do, a reasonably accurate kitchen scale can come in handy here.
 
 ### Tools
 
@@ -204,7 +204,7 @@ If you aren't getting any readings at all or are only getting negative readings 
 
 ---
 
- You may already see how our code from the previous section could be extended for a variety of different projects, for example, weighing our heavy robin! Instead of bolting my load cell between two rigid sheets I attached it to the bottom of the seed tray in my bird feeder and to a rigid sheet fitted into the frame of the bird feeder so that I can weigh birds when they land.
+ You may already see how our code from the previous section could be extended for a variety of different projects, for example, weighing our heavy robin! Instead of bolting my load cell between two rigid sheets I attached it to the bottom of the seed tray in my [bird feeder (which has a handy removable tray which makes adding the load cell a breeze)](https://amzn.to/4lKy14S) and to a rigid sheet fitted into the frame of the bird feeder so that I can weigh birds when they land.
 
 Let's create a final script called `weigh_bird.py` with the following code:
 
