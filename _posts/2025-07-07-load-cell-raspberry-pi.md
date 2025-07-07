@@ -2,10 +2,10 @@
 title: How can I weigh things with a Raspberry Pi? - Using a HX711 ADC and load cell with a Raspberry Pi
 tags: [RaspberryPi, Python, Hardware, Kafka, Article]
 layout: post
-image: /assets/images/flight-radar-banner.png
+image: /assets/images/bird_seo.jpg
 ---
 
-![Flight radar talk photo collage]({{ site.baseurl }}/assets/images/flight-radar-banner.png)
+![Flight radar talk photo collage]({{ site.baseurl }}/assets/images/bird_seo.jpg)
 
 There is a very large robin that often visits the bird feeder on my office window. It's clear this robin is much heavier than other robins because when he lands the impact makes a loud *thwack* sound. I decided to see if I could build a simple setup to figure out exactly how heavy this robin is and in predictable fashion got carried away - this will be the first article in a three part series exploring: building a smart bird feeder than can weigh visiting birds, using AI to identify birds automatically, and bringing it all together with Kafka and Iceberg. 
 
@@ -80,10 +80,11 @@ If everything is assembled correctly each of the rigid sheets should be parallel
 
 5) Flash your SD card and setup your Raspberry Pi. For instructions on how to do this properly check out [this guide on the Raspberry Pi website](https://www.raspberrypi.com/documentation/computers/getting-started.html).
 
-6) Get the library we need to control the HX711 with Python:
+6) Get the library we need to control the HX711 with Python and navigate into the directory:
 
 ``` bash
 git clone https://github.com/tatobari/hx711py
+cd hx711py
 ```
 
 7) Finally, we're ready to calibrate the load cell. Create a script called `calibration.py` with the following code and run it:
