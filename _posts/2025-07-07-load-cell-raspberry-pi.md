@@ -68,7 +68,7 @@ If everything is assembled correctly each of the rigid sheets should be parallel
 
 3) Solder the leads from the load cell to the correct pads on the HX711 as follows: Red to E+, Black to E-, Green to A-, and White to A+ (the pins labeled B+/B- remain empty).
 
-![A schematic showing a red wire connected to E+, a black wire connected to E-, a green wire to A_, and a white wire to A+ on the terminal of a HX711]({{ site.baseurl }}/assets/images/solder-hx711.png)
+![A schematic showing a red wire connected to E+, a black wire connected to E-, a green wire to A-, and a white wire to A+ on the terminal of a HX711]({{ site.baseurl }}/assets/images/solder-hx711.png)
 
 4) Cut off a 4 pin long strip of the included headers, press them short end first into the holes in the board marked GND, DT, SCK, and VCC and solder them from the reverse of the board. This can be fiddly! I usually use a big blob of Blu Tack to hold my headers in place when soldering them but anything that can hold the headers square (i.e. a second pair of hands!) can be really helpful here.
 
