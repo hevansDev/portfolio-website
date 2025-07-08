@@ -5,7 +5,7 @@ layout: post
 image: /assets/images/bird_seo.jpg
 ---
 
-![Flight radar talk photo collage]({{ site.baseurl }}/assets/images/bird_seo.jpg)
+![An image of robins eating bird seed off a wii fit balance board with the caption meanwhile in suburban south london]({{ site.baseurl }}/assets/images/bird_seo.jpg)
 
 There is a very large robin that often visits the bird feeder on my office window. It's clear this robin is much heavier than other robins because when he lands the impact makes a loud *thwack* sound. I decided to see if I could build a simple setup to figure out exactly how heavy this robin is and in predictable fashion got carried away - this will be the first article in a three part series exploring: building a smart bird feeder than can weigh visiting birds, using AI to identify birds automatically, and bringing it all together with Kafka and Iceberg. 
 
@@ -292,7 +292,7 @@ Among some other new features we've added like a variable to keep track of if a 
 
 ## Conclusion and Next Steps
 
-You should now have a working Raspberry Pi powered scale which can be used to accurately weigh things and hopefully some ideas about how you can use it to build your own projects. If you build something using this guide please let me know, I'd love to see what you come up with!
+You should now have a working Raspberry Pi powered scale which can be used to accurately weigh things and hopefully some ideas about how you can use it to build your own projects. If you build something using this guide please let me know, I'd love to see what you come up with! If I were to build this project over I would try and reinforce the delicate cables connecting the load cell to the HX711, I tore these a couple of times and had to resolder them, I think maybe wrapping them in heat shrink or putting a blob of hot glue over the solder joints could help with this.
 
 Whilst this project goes someway to helping me figure out just how heavy my visiting robin is it doesn't actually give me any information about what kind of birds are visiting: just how much they weigh. If the robin visits whilst I'm away I won't know if it was him or just some other slovenly bird. To help solve this problem in future I'd like to explore using a webcam and an image classifier to identify the species of bird visiting my feeder.
 
