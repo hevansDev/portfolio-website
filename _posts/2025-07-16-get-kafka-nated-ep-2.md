@@ -2,7 +2,7 @@
 title: Get Kafka-Nated (Episode  2) Life of a Kafka contributor with Josep Prat
 tags: [Data Engineering, Architecture, OSS, Kafka, Article]
 layout: post
-image: /assets/images/gk-n-ep2.jpg
+image: /assets/images/gk-n-ep2.png
 ---
 
 Check out the second episode of Get Kafka - Nated! I had a great time chatting with Josep Prat about his experiences as a Kafka Contributor and Apache Kafka PMC member. We covered everything from first open source contributions to how to properly manage a major open source project.
