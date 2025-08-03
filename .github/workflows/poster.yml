@@ -69,25 +69,39 @@ jobs:
 
             # Extract the filename from the URL
             image_filename=$(basename "$fixed_og_img_url")
+            
+            # Determine MIME type from file extension
+            if [[ "$image_filename" == *.png ]]; then
+                mime_type="image/png"
+            elif [[ "$image_filename" == *.jpg ]] || [[ "$image_filename" == *.jpeg ]]; then
+                mime_type="image/jpeg"
+            elif [[ "$image_filename" == *.gif ]]; then
+                mime_type="image/gif"
+            elif [[ "$image_filename" == *.webp ]]; then
+                mime_type="image/webp"
+            else
+                mime_type="image/jpeg"  # fallback
+            fi
+            
+            echo "Detected MIME type: $mime_type"
 
             # Download the image with the fixed URL
             curl -o "$image_filename" "$fixed_og_img_url"
+            
             # Get page title
             page_title=$(curl $blog_url -so - | grep -o "<title>[^<]*" | tail -c+8)
 
-            # Upload embed image blob (use the specific filename)
+            # Upload embed image blob with correct MIME type
             blob=$(curl -X POST \
                 -H "Authorization: Bearer ${API_KEY}" \
-                -H 'Content-Type: image/jpeg' \
+                -H "Content-Type: $mime_type" \
                 --data-binary @"$image_filename" \
                 "https://bsky.social/xrpc/com.atproto.repo.uploadBlob")
 
-
             blob_size=$(echo $blob | jq  '.blob.size')
-
             blob_link=$(echo $blob | jq  '.blob.ref."$link"')
 
-            # Site embed
+            # Site embed with correct MIME type
             POST_FEED_URL='https://bsky.social/xrpc/com.atproto.repo.createRecord'
             POST_RECORD="{ \"collection\": \"app.bsky.feed.post\",
             \"repo\": \"${DID}\",
@@ -106,7 +120,7 @@ jobs:
                             \"ref\": {
                                 \"\$link\": $blob_link
                             },
-                            \"mimeType\": \"image/jpeg\",
+                            \"mimeType\": \"$mime_type\",
                             \"size\": $blob_size } 
                         }
                     }
