@@ -38,38 +38,41 @@ If you tried setting up your own bird feeder from the first part of this series 
 
 ## Setup
 
-1) This guide assumes you have a directory of unlabeled images of birds called `images`, if you don't want to go the hassle of setting up your own bird feeder and webcam setup you can download and extract this archive of images from my bird feeder with:
+1) Flash your SD card and setup your Raspberry Pi. For instructions on how to do this properly check out [this guide on the Raspberry Pi website](https://www.raspberrypi.com/documentation/computers/getting-started.html). Connect your webcam to a USB port on your Raspberry Pi.
+
+![Diagram showing webcam connected to USB port on a raspberry pi]({{ site.baseurl }}/assets/images/plug-in-webcam.png)
+
+2) Screw one of the suction cups into the threaded insert in your webcam - this will make it easy to position and adjust your webcam in your window.
+
+![Diagram showing a suction sub with a thread bolt being inserted into a threaded brass insert in the base of a webcam]({{ site.baseurl }}/assets/images/insert-suction-cup.png)
+
+3) Stick your webcam somewhere with a good view of your bird feeder, the closer the lens is to the glass the less glare you'll have in your images. Camera positioning is crucial for accurate bird identification:
+
+- Position the camera as close as you can to bird feeder. If the camera is too far away details can become unclear for classification.
+- Natural daylight works best. Avoid positioning the camera where it captures direct sunlight or creates harsh shadows on the feeder. North-facing windows often provide the most consistent lighting throughout the day.
+- A simple, uncluttered background helps the model focus on the bird. If your view is busy with garden furniture or complex foliage, consider adding a plain backdrop behind your feeder.
+- Most webcams have fixed focus, so test your setup by taking a few photos of objects placed where birds typically perch. Adjust the camera distance until birds in the center of the frame appear sharp.
+- Position the camera to capture birds from the side rather than head-on or from behind - side profiles show the most distinguishing features like breast markings, wing patterns, and body shape.
+
+Remember that the model was trained on a variety of lighting conditions and angles, so don't worry about getting perfect shots every time - even a blur of a Robin in motion can classify correctly!
+
+![A diagram showing a view of a window from the outside with a webcam stuck facing a bird feeder]({{ site.baseurl }}/assets/images/view-of-a-bird-feeder.png)
+
+4) Now that we've got a nice little bird photo-booth set up we can start taking some pictures (if you're following along from part 1 you can update your code to take a photo when a bird is detected [see my source code on GitHub for reference](https://github.com/hevansDev/bird-kafka-demo/blob/main/bird_weights/bird_weights.py)), lets install [OpenCV](https://opencv.org/) for capturing and processing pictures from the webcam.
 
 ```bash
-
+python3 -m pip install opencv-python-headless==4.8.1.78
 ```
 
-If you're picking up from part 1, just connect your webcam to the USB port on your Raspberry Pi and update the `weigh_bird.py` script to add some new code to take a picture of a bird when it lands.
+5) Create a new script called `take_picture.py` with the following Python code:
 
 ```python
 import time
 from datetime import datetime
 import sys
-import RPi.GPIO as GPIO
-from hx711 import HX711
+import cv2
 
-import cv2 # Import open cv2 to handle capturing and processing images
-
-bird_present = False
-
-BIRD_THRESHOLD = 5 # Lightest british songbird Goldcrest 5g
-
-def cleanAndExit():
-    print("Cleaning...")
-        
-    print("Bye!")
-    sys.exit()
-
-hx = HX711(5, 6)
-
-# Add a helper function for taking pictures
-# We'll add the bird weight in the image name as we're not storing it anywhere yet
-def take_photo(weight):
+def take_photo():
     """Take a photo when a bird lands"""
     cap = cv2.VideoCapture(0)
     if cap.isOpened():
@@ -79,63 +82,101 @@ def take_photo(weight):
         ret, frame = cap.read()
         if ret:
             timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-            filename = f"bird_{timestamp}_{weight:.1f}g.jpg"
-            cv2.imwrite("../images/"+filename, frame)
-            print(f" Photo: {filename}")
+            filename = f"bird_{timestamp}.jpg"
+            cv2.imwrite("./images/"+filename, frame)
+            print(f"📸 Photo: {filename}")
         cap.release()
 
-
-hx.set_reading_format("MSB", "MSB")
-
-referenceUnit = 416.71
-hx.set_reference_unit(referenceUnit)
-
-hx.reset()
-
-hx.tare()
-
-print("Tare done! Waiting for birds...")
-
-def bird_landed(weight):
-    """Called when a bird lands on the feeder"""
-    print(f"🐦 Bird landed at {current_time.isoformat()}! Weight: {weight:.2f}g")
-    take_photo(weight) # Take a photo when a bird lands
-
-def bird_left():
-    """Called when a bird leaves the feeder"""
-    print(f"🦅 Bird left!")
-    time.sleep(2)
-    print("Tare done! Waiting for birds...")
-    hx.tare()
-
-while True:
-    try:
-        current_weight = hx.get_weight(5)
-        current_time = datetime.now()
-
-        if not bird_present and current_weight > BIRD_THRESHOLD:
-            bird_present=True
-            bird_landed(current_weight)
-        
-        elif bird_present and current_weight < BIRD_THRESHOLD:
-            bird_present=False
-            bird_left()
-
-        hx.power_down()
-        hx.power_up()
-        time.sleep(0.1)
-
-    except (KeyboardInterrupt, SystemExit):
-        cleanAndExit()
+take_photo()
 ```
 
-Note the addition of `cv2` and a new `images` directory. If you leave your new script running for a while you should start to accrue a collection of bird photos in your `images` dir. Either way before moving on your should have a directory with a collection if images that look something like:
+This script will take a picture and save it to the `images` directory, lets create that dir now and test our script out.
+
+```bash
+mkdir images
+python take_picture.py
+```
+
+You should end up with a picture like the example below in the `images` dir (for those following on from part 1 your images will also include the weight measured when the photo was taken).
 
 ![A picture of a robin on a bird feeder]({{ site.baseurl }}/assets/images/bird_20250801_120750_19.5g.jpg)
-*images/bird_20250801_120750_19.5g.jpg*
+*images/bird_20250801_120750.jpg*
 
-2) Next we need to download the pre-trained model, this comes in two parts...
+6) Now that we have an image of a bird we can use a classifier model to predict the species of the bird in the image. 
 
+**It is unlikely that your Raspberry Pi will be able to run the model due to how computationally intensive it can be to run - I suggest copying your `images` dir from the previous step to your laptop or more powerful computer!**
+
+For this we'll use the pre-trained uk garden birds model from [secretbatcave](https://github.com/secretbatcave/Uk-Bird-Classifier). Download the saved model (the `.pb` stands for [ProtoBuff](https://www.tensorflow.org/guide/saved_model#the_savedmodel_format_on_disk) format) and the classes with:
+
+```bash
+mkdir models
+curl -o models/ukGardenModel.pb https://raw.githubusercontent.com/secretbatcave/Uk-Bird-Classifier/master/models/ukGardenModel.pb
+curl -o models/ukGardenModel_labels.txt https://raw.githubusercontent.com/secretbatcave/Uk-Bird-Classifier/master/models/ukGardenModel_labels.txt
+```
+
+7) Install tensorflow and its dependencies. [Tensorflow](https://www.tensorflow.org/learn) is a software library for machine learning that was used to produce the model we're working with here, we'll use it now to run the model to make a bird species prediction.
+
+```bash
+pip install tensorflow "numpy<2"  protobuf==5.28.3
+```
+
+8) Create a new Python script called `identify_bird.py` with the following Python code:
+
+```python
+import os
+import sys
+import numpy as np
+import tensorflow.compat.v1 as tf
+tf.disable_v2_behavior()
+
+# Suppress warnings
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+tf.disable_v2_behavior()
+
+# Load model
+with tf.io.gfile.GFile('models/ukGardenModel.pb', 'rb') as f:
+    graph_def = tf.GraphDef()
+    graph_def.ParseFromString(f.read())
+    tf.import_graph_def(graph_def, name='')
+
+# Load labels
+with open('models/ukGardenModel_labels.txt', 'r') as f:
+    labels = [line.strip() for line in f.readlines()]
+
+# Read image
+image_path = sys.argv[1]
+with open(image_path, 'rb') as f:
+    image_data = f.read()
+
+# Run inference
+with tf.Session() as sess:
+    predictions = sess.run('final_result:0', {'DecodeJpeg/contents:0': image_data})
+    bird_class = labels[np.argmax(predictions)]
+    print(bird_class)
+```
+
+Note the use of `tensorflow.compat.v1`: this is an older model (from 7+ years ago) so we're using the version 1 compatibility module rather than `tensorflow` to ensure everything works correctly (this is also why we're using the `"numpy<2"` and `protobuf==5.28.3` downgrades).
+
+Lets try making a prediction with one of your photos to see if everything is working correctly:
+
+```bash
+python identify_bird.py images/bird_20250801_120750.jpg
+```
+
+You should see a result like:
+
+```
+WARNING:tensorflow:From /Users/hugh/test/.venv/lib/python3.13/site-packages/tensorflow/python/compat/v2_compat.py:98: disable_resource_variables (from tensorflow.python.ops.resource_variables_toggle) is deprecated and will be removed in a future version.
+Instructions for updating:
+non-resource variables are not supported in the long term
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1754516598.102893 5536073 mlir_graph_optimization_pass.cc:437] MLIR V1 optimization pass is not enabled
+robin
+```
+
+You should see a predicted bird species on the last line of the output.
+
+---
 
 ### Quick Troubleshooting
 
