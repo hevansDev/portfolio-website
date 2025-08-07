@@ -2,10 +2,10 @@
 title: Smart Bird Feeder Part 2 - How can I automatically identify bird species from an image? - Using Tensorflow and a webcam to spot birds
 tags: [RaspberryPi, Python, Hardware, Kafka, Article]
 layout: post
-image: /assets/images/bird_seo.jpg
+image: /assets/images/robin-seo-2.png
 ---
 
-![An image of robins eating bird seed off a wii fit balance board with the caption meanwhile in suburban south london]({{ site.baseurl }}/assets/images/bird_seo.jpg)
+![An image of robins eating bird seed with the text this robin weighs 26.3g]({{ site.baseurl }}/assets/images/this-robin-weighs-26.3g.png)
 
 In [the previous entry in this series]({{ site.baseurl }}/load-cell-raspberry-pi) I built a smart bird feeder that could weigh birds with the goal of figuring out how heavy a particularly portly looking robin was. This only got my part of the way to my goal of once and for all answering the question: is this an abnormally huge robin?
 
