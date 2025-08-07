@@ -1,5 +1,5 @@
 ---
-title: How can I weigh things with a Raspberry Pi? - Using a HX711 ADC and load cell with a Raspberry Pi
+title: Smart Bird Feeder Part 1 - How can I weigh things with a Raspberry Pi? - Using a HX711 ADC and load cell with a Raspberry Pi
 tags: [RaspberryPi, Python, Hardware, Kafka, Article]
 layout: post
 image: /assets/images/bird_seo.jpg
