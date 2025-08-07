@@ -1,5 +1,6 @@
 ---
 <<<<<<< HEAD
+<<<<<<< HEAD
 title: Smart Bird Feeder Part 2 - How can I automatically identify bird species from an image? - Using Tensorflow and a webcam to spot birds
 tags: [RaspberryPi, Python, Hardware, Kafka, Article]
 layout: post
@@ -13,6 +14,9 @@ In [the previous entry in this series]({{ site.baseurl }}/load-cell-raspberry-pi
 The next step is to collect pictures of birds that visit my bird feeder and automatically label them with the species to check to see if the image is of a Robin or not, this will let me track just the weights of Robins so I can easily spot any abnormally heavy birds.
 =======
 title: Smart Bird Feeder Part 2 - How can automatically I identify bird species from an image? - Using Tensorflow and a webcam to spot birds
+=======
+title: Smart Bird Feeder Part 2 - How can I automatically identify bird species from an image? - Using Tensorflow and a webcam to spot birds
+>>>>>>> 1ff4cba (Last pass)
 tags: [RaspberryPi, Python, Hardware, Kafka, Article]
 layout: post
 image: /assets/images/bird_seo.jpg
@@ -22,8 +26,12 @@ image: /assets/images/bird_seo.jpg
 
 In [the previous entry in this series]({{ site.baseurl }}/load-cell-raspberry-pi) I built a smart bird feeder that could weigh birds with the goal of figuring out how heavy a particularly portly looking robin was. This only got my part of the way to my goal of once and for all answering the question: is this an abnormally huge robin?
 
+<<<<<<< HEAD
 The next step is to collect pictures of birds that visit my bird feeder and automatically label them with the species to check to see if the image is of a Robin or not, this will let me track just the weights of Robin's so I can easily spot any abnormally heavy birds.
 >>>>>>> 27dc779 (Made a start on second part of bird feeder series)
+=======
+The next step is to collect pictures of birds that visit my bird feeder and automatically label them with the species to check to see if the image is of a Robin or not, this will let me track just the weights of Robins so I can easily spot any abnormally heavy birds.
+>>>>>>> 1ff4cba (Last pass)
 
 The below guide will talk you through step by step everything you need to do to take a picture of a bird using a cheap webcam and a Raspberry Pi and then using an image classifier model to identify the bird species. 
 
@@ -34,6 +42,9 @@ The below guide will talk you through step by step everything you need to do to 
 Why do we need an image classifier model at all? Our bird feeder can now weigh visiting birds, but weight alone doesn't tell us the species: a 60g bird could be an enormous robin or a tiny pigeon. An image classifier model can analyze a photo from our webcam and automatically identify the bird species so we can track weights by species.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 1ff4cba (Last pass)
 The model works by analyzing the mathematical patterns in the image data that distinguish one bird species from another. Rather than training our own model (which would require thousands of labeled bird photos), we'll use a pre-trained model that already knows how to several British bird and non-bird species including:
 
 * squirrel
@@ -48,9 +59,12 @@ The model works by analyzing the mathematical patterns in the image data that di
 * chaffinch
 * song thrush
 * robin
+<<<<<<< HEAD
 =======
 The model works by analyzing the mathematical patterns in the image data that distinguish one bird species from another. Rather than training our own model (which would require thousands of labeled bird photos), we'll use a pre-trained model that already knows how to identify hundreds of British bird species.
 >>>>>>> 27dc779 (Made a start on second part of bird feeder series)
+=======
+>>>>>>> 1ff4cba (Last pass)
 
 ---
 
@@ -90,10 +104,14 @@ If you tried setting up your own bird feeder from the first part of this series 
 - Position the camera to capture birds from the side rather than head-on or from behind - side profiles show the most distinguishing features like breast markings, wing patterns, and body shape.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 Remember that the model was trained on a variety of lighting conditions and angles, so don't worry about getting perfect shots every time - even a blurry Robin in motion can classify correctly!
 =======
 Remember that the model was trained on a variety of lighting conditions and angles, so don't worry about getting perfect shots every time - even a blur of a Robin in motion can classify correctly!
 >>>>>>> 3fb4d5d (Improved draft of setup instructions)
+=======
+Remember that the model was trained on a variety of lighting conditions and angles, so don't worry about getting perfect shots every time - even a blurry Robin in motion can classify correctly!
+>>>>>>> 1ff4cba (Last pass)
 
 ![A diagram showing a view of a window from the outside with a webcam stuck facing a bird feeder]({{ site.baseurl }}/assets/images/view-of-a-bird-feeder.png)
 
@@ -126,6 +144,7 @@ python3 -m pip install opencv-python-headless==4.8.1.78
 5) Create a new script called `take_picture.py` with the following Python code:
 
 ```python
+import os
 import time
 from datetime import datetime
 import sys
@@ -382,7 +401,7 @@ with tf.Session() as sess:
     print(bird_class)
 ```
 
-Note the use of `tensorflow.compat.v1`: this is an older model (from 7+ years ago) so we're using the version 1 compatibility module rather than `tensorflow` to ensure everything works correctly (this is also why we're using the `"numpy<2"` and `protobuf==5.28.3` downgrades).
+Note the use of `tensorflow.compat.v1`: this is an older model (from 7+ years ago) so we're using the version 1 compatibility module rather than `tensorflow` to ensure everything works correctly (this is also why we're using the `"numpy<2"` and `protobuf==5.28.3` downgrades). There are better models out there but this one is lightweight, free to use, and does not require API access.
 
 Lets try making a prediction with one of your photos to see if everything is working correctly:
 
@@ -403,13 +422,48 @@ robin
 
 You should see a predicted bird species on the last line of the output.
 
----
-
 ### Quick Troubleshooting
 
+* `No module named 'cv2'` or other OpenCV errors: Make sure you installed the headless version with `python3 -m pip install opencv-python-headless==4.8.1.78`. The regular opencv-python package can cause issues on headless Raspberry Pi setups.
 
+* Camera not found / `cannot open camera` error: Check your camera is properly connected with `lsusb`, you should see your webcam listed.
+
+```bash
+hugh@bird:~/bird-kafka-demo $ lsusb
+Bus 001 Device 004: ID 328f:003f EMEET HD Webcam eMeet C960
+Bus 001 Device 003: ID 0424:ec00 Microchip Technology, Inc. (formerly SMSC) SMSC9512/9514 Fast Ethernet Adapter
+Bus 001 Device 002: ID 0424:9514 Microchip Technology, Inc. (formerly SMSC) SMC9514 Hub
+Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+```
+
+Try unplugging and reconnecting the USB cable or trying a different USB port. Some cameras need a moment to initialize after being plugged in. Check with the manufacturers website to see if your webcam requires any specific drivers to work with the Pi.
+
+* Photos are too dark or too bright: Most USB webcams auto-adjust exposure, but this can take a few seconds. The script already captures 5 frames before taking the final photo to allow for this adjustment, but you might need to increase this number for your specific camera.
+
+```python
+        for i in range(5): # Try increasing this value
+            ret, frame = cap.read()
+```
+
+* TensorFlow installation errors: The model requires specific versions. If you get import errors, try: `pip uninstall tensorflow numpy protobuf` followed by `pip install tensorflow "numpy<2"  protobuf==5.28.3`.
+
+* Incorrect classifications: The model works best with clear side-view shots of birds. Very small birds in the distance, birds partially obscured by feeder parts, or photos with multiple birds may give poor results. Try repositioning your camera for clearer shots. Double check the list of classes in `ukGardenModel_labels.txt` to see if the bird species in your model is represented there at all, this model is great at spotting robins but it wasn't trained on images of Blue Tits so might label them incorrectly as a cat or a crow.
+
+---
 
 ## Conclusion and Next Steps
 
+<<<<<<< HEAD
 ## Further Reading
 >>>>>>> 27dc779 (Made a start on second part of bird feeder series)
+=======
+You now have two separate systems: one that detects and photographs birds (and weighs birds if you're following on from part 1), and another that identifies species. These systems can't run on the same hardware though because of the performance limitations of the Raspberry Pi and right now our workflow requires transferring the bird photos to our laptop periodically to run species identification. With this setup I now have some pictures of heavy robins but without storing and analyzing lots of examples of images of birds with species and weight labels I still can't answer my original question of: is this robin abnormally heavy?
+
+In the third and final entry in this bird feeder series I'll use Kafka and Iceberg to bridge the gap between my laptop and the bird feeder, analyze all my collected data, and once and for all figure out just how heavy this Robin is.
+
+
+## Further Reading
+
+- YouTube video [Use AI on a RASPBERRY PI to IDENTIFY BIRDS](https://www.youtube.com/watch?v=pFEhSCYy2LA)
+- [Train your own image classifier with TensorFlow](https://www.tensorflow.org/tutorials/images/classification)
+>>>>>>> 1ff4cba (Last pass)
