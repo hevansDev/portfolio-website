@@ -104,7 +104,9 @@ You should end up with a picture like the example below in the `images` dir (for
 
 6) Now that we have an image of a bird we can use a classifier model to predict the species of the bird in the image. 
 
-**It is unlikely that your Raspberry Pi will be able to run the model due to how computationally intensive it can be to run - I suggest copying your `images` dir from the previous step to your laptop or more powerful computer!**
+![A warning triangle with a broken raspberry pi in it]({{ site.baseurl }}/assets/images/dead-pi.png)
+
+**It is unlikely that your Raspberry Pi will be able to run the model due to how computationally intensive it can be to run - I suggest copying your `images` dir from the previous step to your laptop or more powerful computer! I tried running the model on my Raspberry Pi on a hot day and it got so hot it was permanently damaged, by default the Pi has no active cooling unlike your PC or laptop so this can be surprisingly easy to do.**
 
 For this we'll use the pre-trained uk garden birds model from [secretbatcave](https://github.com/secretbatcave/Uk-Bird-Classifier). Download the saved model (the `.pb` stands for [ProtoBuff](https://www.tensorflow.org/guide/saved_model#the_savedmodel_format_on_disk) format) and the classes with:
 
