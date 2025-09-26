@@ -2,7 +2,7 @@
 title: Is Meetup Terrible or is *my* meetup terrible?
 tags: [Community, Meetup, Article]
 layout: post
-image: /assets/images/gk-n-ep7.png
+image: /assets/images/meetup-is-terrible2.png
 ---
 
 I’ve spent a lot of time and energy this year complaining about Meetup ([at the CodeBar Festival Fringe](https://hughevans.dev/meetup-is-terrible-now-codebar-festival-fringe/), [at PyCon UK](https://hughevans.dev/py-con-uk-2025/#:~:text=I%20took%20the%20opportunity%20to%20speak%20a%20bit%20about%20notanother.pizza%20and%20community%20organising%20in%20another%20%E2%80%9CMeetup%20is%20terrible%20now%E2%80%9D%20lightning%20talk.), and [on my blog](https://hughevans.dev/not-another-pizza/)). Meetup is becoming more expensive, less reliable, and generally ‘[enshittified](https://en.wikipedia.org/wiki/Enshittification)’ which came to a head at the beginning of this year when [AI Signals, a community](http://aisignals.org.uk) I organise through Meetup saw a marked drop in attendance.
