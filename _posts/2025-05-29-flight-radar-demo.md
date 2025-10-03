@@ -394,6 +394,79 @@ Press `Ctrl+C` to exit the consumer and `exit` to leave the broker container.
 
 Not seeing any messages in Kafka? Triple check the values of your secrets both in your `.env` file and in `consumer.properties`, these must match for either the initial production or the test consumer to work.
 
+#### No aircraft detected?
+
+Check your antenna USB connection:
+
+```bash
+lsusb | grep RTL
+```
+
+Expected output:
+
+```bash
+Bus 001 Device 033: ID 0bda:2838 Realtek Semiconductor Corp. RTL2838 DVB-T
+```
+
+If the device isn't showing up, verify the USB connection is secure, try a different USB port (preferably USB 2.0+), and restart ultrafeeder with:
+
+```bash
+docker-compose down && docker-compose up -d
+```
+
+Device detected but ultrafeeder shows "no supported devices found"?
+Kernel 6.12+ has known issues with RTL-SDR USB support. Conflicting DVB-TV drivers claim the device before RTL-SDR drivers can access it.
+Solution: Blacklist the DVB drivers
+Create a blacklist configuration file:
+
+```bash
+sudo nano /etc/modprobe.d/blacklist-rtl.conf
+```
+
+Add these lines:
+
+```bash
+blacklist dvb_usb_rtl28xxu
+blacklist rtl2832
+blacklist rtl2830
+```
+
+Save the file (Ctrl+X, then Y, then Enter) and reboot the Pi:
+
+```bash
+sudo reboot
+```
+
+Verify the fix and test the RTL-SDR directly with:
+
+```bash
+rtl_test
+```
+
+Expected output:
+
+```bash
+Found 1 device(s):
+  0:  Realtek, RTL2838UHIDIR, SN: 00000001
+
+Using device 0: Generic RTL2832U OEM
+Found Rafael Micro R820T tuner
+```
+
+Press Ctrl+C to stop the test.
+Check the ultrafeeder logs:
+
+```bash
+docker logs --tail 20 ultrafeeder
+```
+
+They should contain:
+
+```bash
+rtlsdr: using device #0: Generic RTL2832U OEM (Realtek, RTL2838UHIDIR, SN 00000001)
+Found Rafael Micro R820T tuner
+```
+
 ---
 
 ## Conclusion and Next Steps
