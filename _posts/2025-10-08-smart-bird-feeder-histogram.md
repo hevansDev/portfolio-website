@@ -5,6 +5,8 @@ layout: post
 image: /assets/images/bird-charts-seo.png
 ---
 
+![]({{ site.baseurl }}/assets/images/bird-charts-seo.png)
+
 By popular request here's all the data I collected from [my smart feeder]({{ site.baseurl }}/load-cell-raspberry-pi).
 
 This is my first time trying [Marimo](https://marimo.io/) and I really liked using it for visualising this data.
